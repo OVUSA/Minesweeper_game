@@ -1,17 +1,21 @@
 .grid{
-    height:400px;
-    width: 400px;
+    height:500px;
+    width: 500px;
     display: flex;
     flex-wrap :wrap;
-    background-color: grey;
+    background-color: lightgreen;
 
 }
 
 .grid div{
-    height: 30px;
-    width: 30px;
+    margin: auto;
+    height: 40px;
+    width: 40px;
+    border: outset white;
     
 }
+
+
 .bomb{
     background-color: orange;
 }
