@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     // get any element from the html file
     const container = document.querySelector('.container');
     let ds = document.querySelector('.display');
-    let numbers=[];
+    let numbers=0;
+    let priv = 0;
 
 function createButtons(){
     
@@ -27,39 +28,41 @@ function createButtons(){
         btn.addEventListener('click',()=>{
             let vl = Number(btn.value);
             //ds defined above
-            if(btn.value!=4){
-                ds.innerHTML=vl;
+            if(numbers!=0){
+                calculateTotal(vl);
             }
-            
-            
-    
+            ds.innerHTML=sevNumber(vl);    
         })
 
     }
 
+    function calculateTotal(input){
+        if(priv=="+"){
+           console.log(ds.innerHTML= numbers+input);
+        }else if(priv=="-"){
+            ds.innerHTML= numbers-input;
+        }else if(priv=="*"){
+            ds.innerHTML= numbers*input;
+        }else if(priv=="/"){
+            ds.innerHTML= numbers/input;
+        }
+
+    }
+    function sevNumber(input){
+
+        if(input==13) { return 0; }
+        else if (input==4){ priv = "+";return "+";}    
+        else if(input==13){ priv = "."; return ".";}  
+        else if(input==8){ priv = "-";return "-";}  
+        else if(input==12){priv = "/"; return "/";}  
+        else if(input==15){priv = "*";return "*";} 
+        else{
+            return input;
+        }
+    }
+
 }
 
-
-
-
-function subtraction(){
-    let tl = 0;
-    total.forEach(element => {
-        tl-=element;
-    });
-    console.log(tl);
-
-}
-
-
-function countTotal(){
-    let tl = 0;
-    total.forEach(element => {
-        tl+=element;
-    });
-    console.log(tl);
-
-}
 createButtons();
 
 });
