@@ -1,6 +1,8 @@
 
 document.addEventListener('DOMContentLoaded',()=>{
+    // get any element from the html file
     const container = document.querySelector('.container');
+    let ds = document.querySelector('.display');
     let numbers=[];
 
 function createButtons(){
@@ -21,21 +23,25 @@ function createButtons(){
         else{
             btn.innerHTML = i+1; 
         }
-        btn.addEventListener('click',function(){
-            
-            let input = Number(btn.value);
-           
-           
 
-
+        btn.addEventListener('click',()=>{
+            let vl = Number(btn.value);
+            //ds defined above
+            if(btn.value!=4){
+                ds.innerHTML=vl;
+            }
             
+            
+    
         })
-         
 
     }
-    
 
 }
+
+
+
+
 function subtraction(){
     let tl = 0;
     total.forEach(element => {
