@@ -17,7 +17,7 @@ function createButtons(){
          
         if(i==12)  {btn.innerHTML = 0;  }
         else if (i==3){btn.innerHTML = "+";}    
-        else if(i==13){btn.innerHTML=".";}  
+        else if(i==13){btn.innerHTML="=";}  
         else if(i==7){btn.innerHTML="-";}  
         else if(i==11){btn.innerHTML="/";}  
         else if(i==14){btn.innerHTML="*";}  
