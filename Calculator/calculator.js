@@ -26,12 +26,7 @@ function createButtons(){
         }
 
         btn.addEventListener('click',()=>{
-            let vl = Number(btn.value);
-            //ds defined above
-            if(numbers!=0){
-                calculateTotal(vl);
-            }
-            ds.innerHTML=sevNumber(vl);    
+            return btn.value;    
         })
 
     }
