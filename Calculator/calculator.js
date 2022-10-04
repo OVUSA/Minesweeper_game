@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     // get any element from the html file
     const container = document.querySelector('.container');
     let ds = document.querySelector('.display');
-    let numbers=0;
+    let q = new Queue();
     let priv = 0;
 
 function createButtons(){
@@ -13,50 +13,42 @@ function createButtons(){
         
         btn.classList.add("class"+i);
         container.appendChild(btn);       
-        btn.value = i+1;  
+        
          
-        if(i==12)  {btn.innerHTML = 0;  }
-        else if (i==3){btn.innerHTML = "+";}    
-        else if(i==13){btn.innerHTML="=";}  
-        else if(i==7){btn.innerHTML="-";}  
-        else if(i==11){btn.innerHTML="/";}  
-        else if(i==14){btn.innerHTML="*";}  
+        if(i==12)  {btn.value = 0;  }
+        else if (i==3){btn.value = "+";}    
+        else if(i==13){btn.value ="=";}  
+        else if(i==7){btn.value ="-";}  
+        else if(i==11){btn.value ="/";}  
+        else if(i==14){btn.value ="*";}  
         else{
-            btn.innerHTML = i+1; 
+            btn.value = i+1
         }
+
+        btn.innerHTML = btn.value;
 
         btn.addEventListener('click',()=>{
-            return btn.value;    
+
+            if(btn.value != "+"|| btn.value != "="|| btn.value !="-"||btn.value !="/")  {
+                let num = Number(btn.value);
+                calculateTotal();
+                q.push(num);
+              
+            }else {
+                priv = btn.value;
+                }
+            
         })
 
-    }
-
-    function calculateTotal(input){
-        if(priv=="+"){
-           console.log(ds.innerHTML= numbers+input);
-        }else if(priv=="-"){
-            ds.innerHTML= numbers-input;
-        }else if(priv=="*"){
-            ds.innerHTML= numbers*input;
-        }else if(priv=="/"){
-            ds.innerHTML= numbers/input;
-        }else if(priv=="="){
-            console.log(ds.innerHTML= numbers+input);
-
-        }
 
     }
-    function sevNumber(input){
 
-        if(input==13) { return 0; }
-        else if (input==4){ priv = "+";return "+";}    
-        else if(input==13){ priv = "="; return "=";}  
-        else if(input==8){ priv = "-";return "-";}  
-        else if(input==12){priv = "/"; return "/";}  
-        else if(input==15){priv = "*";return "*";} 
-        else{
-            return input;
-        }
+
+}
+
+function calculateTotal(){
+    if(priv=="+"){
+
     }
 
 }
