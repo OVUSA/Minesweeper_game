@@ -31,8 +31,12 @@ function createButtons(){
 
             if(btn.value != "+"|| btn.value != "="|| btn.value !="-"||btn.value !="/")  {
                 let num = Number(btn.value);
-                calculateTotal();
-                q.push(num);
+                if(!q.isEmpty()){
+                    calculateTotal(num);
+                }else{
+                    q.push(num);
+                }
+                
               
             }else {
                 priv = btn.value;
@@ -46,10 +50,18 @@ function createButtons(){
 
 }
 
-function calculateTotal(){
+function calculateTotal(let ,num2){
+    let total = q.pop();
     if(priv=="+"){
-
-    }
+      total =  q.add(total+num2);
+    }else if (priv=="-"){
+        total =  q.add(total-num2);
+      }else if (priv=="/"){
+        total =  q.add(total/num2);
+      }else if (priv=="*"){
+        total =  q.add(total*num2);
+      }else if 
+    ds.innerHTML = total;
 
 }
 
