@@ -7,6 +7,7 @@ const display = document.querySelector('.display');
 
 var stack = [];
 let curOperator;
+let total;
     
 function createButtons(){    
     for ( let i = 0;i <15;i++){
@@ -25,16 +26,15 @@ function createButtons(){
         }
         btn.innerHTML = btn.value;
         btn.addEventListener('click',()=>{
-            if(btn.value =="-"||btn.value =="+"||btn.value =="/"||btn.value =="*"|| btn.value =="="){
+            if(btn.value =="-"||btn.value =="+"||btn.value =="/"||btn.value =="*"){
                 curOperator = btn.value;
+            }else if (btn.value =="="){
+                display.innerHTML = total;
             }else{
                 display.innerHTML = btn.value;
                 let tempInput = Number(btn.value);
                 calculate(tempInput);
-            }
-            
-                      
-            calculate(btn.value);            
+            }          
         })                  
     }
 }
@@ -44,11 +44,12 @@ function createButtons(){
 createButtons();
 
 function calculate (num){
+    console.log(stack);
     if(stack.length == 0){
         stack.push(num);
     }else {
        let temp =  stack.pop();
-       let total = count(temp,num) 
+       count(temp,num) 
        stack.push(total);
 
     }
@@ -57,8 +58,15 @@ function calculate (num){
 
 function count(num, num1){
     if(curOperator =='+'){
-        return num+num1;
+        total = num+num1;
+    }else if (curOperator =='-'){
+        total = num-num1;
+    }else if (curOperator =='*'){
+        total = num*num1;
+    }else if (curOperator =='/'){
+        total = num/num1;
     }
-}
+    display.innerHTML = total;
 
+}
 });
