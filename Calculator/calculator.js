@@ -5,9 +5,11 @@ document.addEventListener('DOMContentLoaded',()=>{
 const container = document.querySelector('.container');
 const display = document.querySelector('.display');
 
+
 var stack = [];
 let curOperator;
-let total;
+let total = 0;
+display.innerHTML = total;
     
 function createButtons(){    
     for ( let i = 0;i <15;i++){
@@ -16,20 +18,30 @@ function createButtons(){
         container.appendChild(btn); 
        
         if(i ==3){btn.value = "+"; }
+       
         else if (i ==7){btn.value = "-";}
         else if (i==11){btn.value = "*";}
         else if (i==14){btn.value = "/";}
         else if (i==12){btn.value = 0;}
-        else if (i==13){btn.value = "=";}
-        else{
+        else if (i==13){btn.value = "AC";}
+        else if (i <3){
             btn.value = i+1;
+        }else if (i>=4 && i<7){
+            btn.value = i;
+        }else{
+            btn.value = i-1;
         }
         btn.innerHTML = btn.value;
         btn.addEventListener('click',()=>{
             if(btn.value =="-"||btn.value =="+"||btn.value =="/"||btn.value =="*"){
                 curOperator = btn.value;
-            }else if (btn.value =="="){
-                display.innerHTML = total;
+            }else if (btn.value =="AC"){
+                stack.forEach(element => {
+                    stack.pop()
+                });
+                curOperator = null;
+                total = 0;
+                display.innerHTML= 0;
             }else{
                 display.innerHTML = btn.value;
                 let tempInput = Number(btn.value);
@@ -38,8 +50,6 @@ function createButtons(){
         })                  
     }
 }
-
-// 4,8,12,14,15
 
 createButtons();
 
