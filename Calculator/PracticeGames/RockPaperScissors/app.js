@@ -24,17 +24,14 @@ function computerTurn(){
 }
 
 function getResult (){
-    if(computerChoice===tempUserChoice){
-        tempResult = "Withdraw";
-        result.innerHTML = tempResult;
-    }
-    if(tempComputerChoice ==="Scissors" && tempUserChoice==="Paper"|| (tempComputerChoice ==="Paper"&& tempUserChoice =="Rock")){
+    if(tempComputerChoice == tempUserChoice){
+        result.innerHTML = "its a draw";
+    }else if(tempComputerChoice ==="Scissors" && tempUserChoice==="Paper"|| (tempComputerChoice ==="Paper"&& tempUserChoice =="Rock")){
         result.innerHTML = "Computer win!Try again."
-    }
-    if(tempComputerChoice==="Rock"&& tempUserChoice =="Scissors"){
+    }else if(tempComputerChoice==="Rock"&& tempUserChoice =="Scissors"){
         result.innerHTML = "Computer win! Try again."
     }else{
-        result.innerHTML= "You win!Congratulation!"
+        result.innerHTML= "You win.Congratulation!"
     }
     
     
