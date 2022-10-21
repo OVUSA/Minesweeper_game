@@ -1,16 +1,16 @@
 .grid{
-    height:450px;
+    height:455px;
     width: 450px;
     display: flex;
     flex-wrap :wrap;
-    background-color: lightgreen;
+    background-color: gray;
 
 }
 
 .grid div{
     margin: auto;
-    height: 40px;
-    width: 40px;
+    height: 38px;
+    width: 38px;
     border: outset white;
     
 }
@@ -19,3 +19,8 @@
 .bomb{
     background-color: orange;
 }
+
+body {
+    max-width: max-content;
+    margin: 35px auto;
+    }
