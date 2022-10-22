@@ -3,14 +3,21 @@
 
 document.addEventListener('DOMContentLoaded',()=>{
     const grid = document.querySelector('.grid');
+    const game = document.querySelector('gameStatus');
+
+
+    
+    const easy = 9;
+    const mid = 16;
+    const hard = 30;
     let width = 10;
     let squares = [];
     let bombAmount = 20;
 
-    //create Board
+   
 
     function createBoard(){
-        //get
+        
         const emptyCells = Array(100 - bombAmount).fill("valid");
         const bombs = Array(bombAmount).fill('bomb')
         const gameArray = emptyCells.concat(bombs);
