@@ -1,53 +1,44 @@
-.grid{
-    height:455px;
-    width: 450px;
-    display: flex;
-    flex-wrap :wrap;
-    background-color: gray;
-
-}
-
-.grid div{
-    margin: auto;
-    height: 38px;
-    width: 38px;
-    border: outset white;   
-}
-.grid div:hover{
-    background-color: yellow;
-}
-
-
-.bomb{
-    background-color: orange;
-}
-
 body {
-    max-width: max-content;
-    margin: 35px auto;
-    }
-button{
-    display:inline-block;
-    border: none;
-    border: 2px solid orange;
-    padding: 15px 32px;
+    margin: auto;
+    width: 540px; 
+    height: 550px;
+    padding: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    
+  }
+
+h1{
+    background-color:#B9B9B9 ;
+    font-size: 40px;
     text-align: center;
-    width: 48%;
-    font-size: 16px;  
-    border-radius: 15px;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: 8px;
+    margin: 0;
+    padding: 25px 0px 75px 20px;
 }
-form{
-    display:inline-block;
-    width:50%;
+section{
+    background-color:#B9B9B9 ;
+    height: 300px;
+}
+button{
+    transform: translateY(-50%);
+    transform: translateX(85%);
+    display:block;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 10px;
+    padding: auto;
+    border: 0.2px solid black;
+    border-radius: 4px;
+    width: 200px;
+    height: 60px;
+    font-size: large;
+    background-color: #B9B9B9;
+}
+button:hover{
+    background-color: aliceblue;
+    border: outset darkgray;
+}
 
-    margin-bottom: 0;
-
-}
-.selectForm{
-    background-color: antiquewhite;
-    width: 100%;
-    height: 100%;
-    font-size: 16px;
-    border-radius: 15px;
-}
 

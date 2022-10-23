@@ -4,20 +4,14 @@
         <meta charset = "UTF-8">
         <title> MineSweeper Game</title>
         <link rel = "stylesheet" href = "style.css"></link>
-        <script  src = "script.js"></script>
+        <script  src = "firstPage.js"></script>
     </head>
 <body>
-    <header>       
-        <form action = "action">
-            <label for="gameLevels">Select level</label>
-            <select class ="selectForm">
-                <option value = "easy">Easy</option>
-                <option value = "medium">Medium</option>
-                <option value = "hard">Hard</option>
-            </select>           
-        </form>
-        <button class="gameStatus"><span class ="buttonText">New Game</span></button>
-    </header>
-    <div class = "grid"></div>
+    <h1> MINESWEEPER</h1>
+    <section>
+        <button id="1" onclick = "setGameLevel()">BEGINNER</button>
+        <button id="2" onclick = "setGameLevel()">INTERMEDIATE</button>
+        <button id="3" onclick = "setGameLevel()">EXPERT</button>
+    </section>
 </body>
 </html>
