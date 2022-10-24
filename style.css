@@ -15,7 +15,7 @@ h1{
     font-weight: normal;
     letter-spacing: 8px;
     margin: 0;
-    padding: 25px 0px 75px 20px;
+    padding: 25px 0px 35px 20px;
 }
 /* First state of the game*/
 section{
@@ -48,21 +48,25 @@ button:hover{
 
 header{
     margin: auto;   
-    border: 1px solid black;
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
     padding: 10px;
     background-color: #00A1B7;   
     width: 320px;
     margin-bottom: 0px;
 }
+/* board*/
 .grid{
     margin: auto;
-    border-bottom: 3px solid green;
-
     height:370px;
     width: 340px;
     display: flex;
     flex-wrap :wrap;
     background-color: #488588;
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
 
 }
 .grid div{
@@ -74,6 +78,9 @@ header{
     width: 30px;    
     background-color: #10C5D0;
 }
+.grid div:hover{
+    background-color: yellow;  
+}
 /*button is hidden in Second state but appers in third*/
 button.reset{  
     display: inline;
@@ -84,9 +91,11 @@ button.reset{
     background-color: #00A1B7;
     border: 0.5px solid black;
     letter-spacing: 2px;
-    border-radius: 2px;
+    border-radius: 3px;
     padding: 5px;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    visibility: hidden;
 }
 button.reset:hover{
     border: 1px inset white;
@@ -97,18 +106,30 @@ button.reset:active {
     box-shadow: 0 5px #666;
     transform: translateY(4px);
   }
-/*a span in a header displays number of remain mines*/
-.mines{
-    
+
+.mines{   
     display: inline;
     font-size: large;
     color:black;
     margin: auto;
-    margin: 10px 0px;
+    margin-left: 30px;          
 }
-.grid div:nth-child(even){
-    background-color:#83DADF ;
+.grid div:nth-child(odd){
+	background-color:#83DADF ;
+}   
+
+.clock{
+    display: inline;
+    font-size: 20px;
+    color:black;
+    margin-left:15px ; 
+    margin-right: 3px;
 }
+h1.SecondState{
+    letter-spacing: 20px;
+    margin-top: 0;
+}
+
 
 
 
