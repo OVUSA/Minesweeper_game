@@ -4,11 +4,12 @@
 document.addEventListener('DOMContentLoaded',()=>{
 
     const grid = document.querySelector('.grid');
-    let flagCount = document.querySelector('.flagNumber').innerHTML = 10;
+    let flagCount = document.querySelector('.flagNumber');
+    flagCount.innerHTML=10;
     let flags = 10;
     let squares = [];
     var numberCells = 100;
-    let numberBombs = 20;   
+    let numberBombs = 10;   
 
     function createBoard(numberCells, numberBombs){
         
@@ -31,17 +32,19 @@ document.addEventListener('DOMContentLoaded',()=>{
                     //left
                     if(checkTheCell(square.className)){
                         square.style.backgroundColor = "red";
-                        square.setAttribute("src","bomb.png");
+                        exposeAllMines();
+                       // square.setAttribute("src","bomb.png");
                     } else{
                         square.style.backgroundColor = "#D9D9D9";
+                        square.style.border="red";
                     }
                     break;
                   case 2:
                     //right
                     square.innerHTML = "&#128681"
                     flags--;
-                    console.log(`Remains number of flags${flags}`);
                     flagCount.innerHTML = flags;
+                    console.log(`Remains number of flags ${flags}`);
                     break;
                   default:
                     console.log(`Unknown button code: ${e.button}`);
@@ -61,8 +64,17 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
     }
 
-    function exposeAllMines(){
-
+    function exposeAllMines(){     
+        var sq = document.querySelectorAll('.bomb')
+        sq.forEach(element => {
+            element.style.backgroundColor= "red";
+            // element.confetti();
+            // confetti({
+            //     particleCount: 100,
+            //     spread: 70,
+            //     origin: { y: 0.6 }
+            //   });
+        });
     }
 
 })
