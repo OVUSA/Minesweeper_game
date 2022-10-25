@@ -2,38 +2,78 @@
 // in this case html file will be loaded before JS code
 
 document.addEventListener('DOMContentLoaded',()=>{
+
     const grid = document.querySelector('.grid');
-    const game = document.querySelector('gameStatus');
-
-
-    
-    const easy = 9;
-    const mid = 16;
-    const hard = 30;
-    let width = 10;
+    let flagCount = document.querySelector('.flagNumber').innerHTML = 10;
+    let flags = 10;
     let squares = [];
-    let bombAmount = 20;
+    var numberCells = 100;
+    let numberBombs = 20;   
 
-   
-
-    function createBoard(){
+    function createBoard(numberCells, numberBombs){
         
-        const emptyCells = Array(100 - bombAmount).fill("valid");
-        const bombs = Array(bombAmount).fill('bomb')
+        const emptyCells = Array(numberCells - numberBombs).fill("valid");
+        const bombs = Array(numberBombs).fill('bomb')
         const gameArray = emptyCells.concat(bombs);
         const shuffleArrays = gameArray.sort(()=>Math.random() -0.5)
-        console.log(shuffleArrays);
+        console.log(shuffleArrays);     
 
-
-        for( let i = 0; i < 100; i++){
+        for( let i = 0; i < numberCells; i++){
             const square = document.createElement('div')
-            square.setAttribute('id',i)
-            // each square has a class with a value of the cell that were assigned to it in shuffleArrays
+            square.setAttribute('id',i)         
             square.classList.add(shuffleArrays[i]);
             grid.appendChild(square)
             squares.push(square)
-
+            square.addEventListener('mouseup', (e) => {
+                changeVisibility();
+                switch (e.button) {
+                  case 0:
+                    //left
+                    if(checkTheCell(square.className)){
+                        square.style.backgroundColor = "red";
+                        square.setAttribute("src","bomb.png");
+                    } else{
+                        square.style.backgroundColor = "#D9D9D9";
+                    }
+                    break;
+                  case 2:
+                    //right
+                    square.innerHTML = "&#128681"
+                    flags--;
+                    console.log(`Remains number of flags${flags}`);
+                    flagCount.innerHTML = flags;
+                    break;
+                  default:
+                    console.log(`Unknown button code: ${e.button}`);
+                }
+              });
         }
     }
-    createBoard();
+
+    createBoard(numberCells,numberBombs);
+
+    function checkTheCell(squareClass){
+        if(squareClass =='bomb'){
+            return true;
+            //selectedSquare.innerHTML=<img src = "bomb.png"></img>
+        }else{            
+            return false;
+        }
+    }
+
+    function exposeAllMines(){
+
+    }
+
 })
+
+// change visibility of reset button when user starts the game
+function changeVisibility(){
+    let resetButton = document.querySelector('.reset')
+    if(resetButton.style.visibility =='hidden'){
+        resetButton.style.visibility='visible';
+    }
+}
+
+
+ 
