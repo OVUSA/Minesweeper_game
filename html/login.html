@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = "stylesheet" href = "../css/login_style.css"></link>
+        <script src = "../js/login.js"></script>
+
+    </head>
+    <body>
+        <div class="container">
+
+            <section class ="login">
+                <form action="#">
+                    <label for = "name">User name</label>
+                    <input type ="text" id="name" placeholder="Your name..">
+                    <label for ="password"> Password</label>
+                    <input type = "text" id="password"placeholder = "Yous password..">
+                    <button type = "submit" value = "Submit" onclick="addPlayer()">Submit</button>
+                </form>
+            </section>
+
+            <section class="guest">
+                <button onclick="selectLevel()">Play as a Guest</button>   
+            </section>
+        </div>
+        
+
+    </body>
+</html>
