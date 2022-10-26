@@ -5,7 +5,7 @@ function setGameLevel(id) {
     if(id =="1"){
         console.log("Beginner")
         //createBoard(100,10); 
-        window.location.href="game.html";
+        window.location.href="../html/board.html";
          
     }else if(id=="2"){
         console.log("Intermediate")        
