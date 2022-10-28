@@ -1,27 +1,26 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel = "stylesheet" href = "../css/signup_style.css"></link>
-        <script src = "../js/login.js"></script>
-
-    </head>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Minesweeper login page</title>
+    <link rel = "stylesheet"  type ="text/css" href = "../css/signup_style.css">
+</head>
     <body>
-        <div class="container">
+        <main>
             <section class ="signupSection">
                 <form  id="signup">
                     <label for = "name">User name</label>
                     <input type ="text" id="name" placeholder="Your name..">
                     <label for ="password"> Password</label>
                     <input type = "text" id="password"placeholder = "Your password..">
-                    <button id="btn" value = "Submit" onclick="addPlayer()">Submit</button>
+                    <button id="btn">Submit</button>
                 </form>
             </section>
 
             <section class="guest">
                 <button onclick="selectLevel()">Play as a Guest</button>   
             </section>
-        </div>
-        
-
-    </body>
+        </main>       
+    <script type="module" src = "../js/User.js"></script>
+</body>
 </html>

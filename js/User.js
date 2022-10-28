@@ -1,16 +1,20 @@
-class User{
+class User {
 
-    constructor(name, password){
-        this.name = name;
-        this.password = password;
-    }
-
+	constructor(username, password) {
+		this.username = username;
+		this.password = password;
+	}
 }
-const btn = document.getElementById('btn');
-btn.addEventListener('click', () => {
-    var currentUser = new User(
-        document.getElementById('name').value,
-        document.getElementById('password').value);
-        console.log(`Registered user : ${currentUser.name}`);
+User.prototype.saveInfo= function(){
+    console.log(User);
+}
+const currentUser = new User();
 
+const getUsernameBtn = document.getElementById("btn");
+
+getUsernameBtn.addEventListener('click', () => {
+    currentUser.name = document.getElementById('name').value;
+    //currentUser.password = document.getElementById('password').value;
+    console.log(`username = ${currentUser.username}`);
 })
+
