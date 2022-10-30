@@ -17,7 +17,5 @@ Second state:<br/>
 <img src = https://user-images.githubusercontent.com/60892608/197409795-d52449ce-cf72-481d-9018-973dd1519a39.png width=50% height=50%>
 Third state:<br/>
 <img src= https://user-images.githubusercontent.com/60892608/197409803-458c22a2-1a75-43e3-b8da-08cba61a15a8.png width=50% height=50%>
-
-
-
-
+The last state: <br/>
+<img src = https://user-images.githubusercontent.com/60892608/198855099-78759534-ff30-406b-8f49-276044bcc65a.jpg width=50% height=50%>
