@@ -27,30 +27,36 @@ document.addEventListener('DOMContentLoaded',()=>{
             squares.push(square)
             square.addEventListener('mouseup', (e) => {
                 changeVisibility();
-                switch (e.button) {
-                  case 0:
-                    //left
-                    if(checkTheCell(square.className)){
-                        square.style.backgroundColor = "red";
-                        exposeAllMines();
-                       // square.setAttribute("src","bomb.png");
-                    } else{
-                        square.style.backgroundColor = "#D9D9D9";
-                        square.style.border="red";
-                    }
-                    break;
-                  case 2:
-                    //right
-                    square.innerHTML = "&#128681"
-                    flags--;
-                    flagCount.innerHTML = flags;
-                    console.log(`Remains number of flags ${flags}`);
-                    break;
-                  default:
-                    console.log(`Unknown button code: ${e.button}`);
-                }
+                mouseClick(square, e);
+
               });
         }
+    }
+
+
+    function mouseClick(square, e){
+        switch (e.button) {
+            case 0:
+              //left
+              if(checkTheCell(square.className)){
+                  square.style.backgroundColor = "red";
+                  exposeAllMines();
+                 // square.setAttribute("src","bomb.png");
+              } else{
+                  square.style.backgroundColor = "#D9D9D9";
+                  square.style.border="white";
+              }
+              break;
+            case 2:
+              //right
+              square.innerHTML = "&#128681"
+              flags--;
+              flagCount.innerHTML = flags;
+              break;
+            default:
+              console.log(`Unknown button code: ${e.button}`);
+          }
+
     }
 
     createBoard(numberCells,numberBombs);
