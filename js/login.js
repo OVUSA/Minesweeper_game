@@ -1,3 +1,3 @@
  function selectLevel(){
-    window.location.href="../html/levels.html";
+    window.location.href="../html/game.html";
  }

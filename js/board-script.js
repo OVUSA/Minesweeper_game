@@ -1,18 +1,32 @@
 // add DOM even listener to the file
 // in this case html file will be loaded before JS code
+function setGameLevel(id) {
+    let section = document.querySelector('.levels');
+    section.style.display="none";
 
-document.addEventListener('DOMContentLoaded',()=>{
-
-    const grid = document.querySelector('.grid');
-    let flagCount = document.querySelector('.flagNumber');
-    flagCount.innerHTML=10;
-    let flags = 10;
-    let squares = [];
-    var numberCells = 100;
-    let numberBombs = 10;   
-
+    let game = document.querySelector('.game');
+    game.style.display="block";
+    if(id =="1"){
+        console.log("Beginner")
+        createBoard(100,10);               
+    } else if(id=="2"){
+        console.log("Intermediate")        
+        //createBoard(256,40);
+    }else{
+        console.log("Expert")
+        //window.location.href = "game.html"; 
+       // createBoard(400,99);
+    } 
+}
     function createBoard(numberCells, numberBombs){
-        
+
+        const grid = document.querySelector('.grid');
+        let flagCount = document.querySelector('.flagNumber');
+
+        let flags = 10;
+        let squares = [];  
+        //flagCount.innerHTML=numberBombs;
+        console.log("Creating game....");
         const emptyCells = Array(numberCells - numberBombs).fill("valid");
         const bombs = Array(numberBombs).fill('bomb')
         const gameArray = emptyCells.concat(bombs);
@@ -31,8 +45,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 
               });
         }
-    }
 
+}
 
     function mouseClick(square, e){
         switch (e.button) {
@@ -59,8 +73,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     }
 
-    createBoard(numberCells,numberBombs);
-
     function checkTheCell(squareClass){
         if(squareClass =='bomb'){
             return true;
@@ -83,7 +95,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         });
     }
 
-})
+
 
 // change visibility of reset button when user starts the game
 function changeVisibility(){
