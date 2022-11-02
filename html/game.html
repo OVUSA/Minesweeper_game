@@ -2,19 +2,26 @@
 <html>
     <head>
         <meta charset = "UTF-8">
+        <meta name="Classic MineSweeper game" content="Interactive game">
+        <meta name="OlgaVelichko" content="Game">
         <title> MineSweeper Game</title>
         <link rel = "stylesheet" href = "../css/style.css"></link>
         <script  src = "../js/board-script.js"></script>
     </head>
 <body>
-    <div class="game">
-        <h1 class="SecondState"> MINESWEEPER</h1>
+    <h1> MINESWEEPER</h1>
+    <div class="levels">
+        <button  onclick = "setGameLevel(1)" >BEGINNER</button>
+        <button  onclick = "setGameLevel(2)">INTERMEDIATE</button>
+        <button  onclick = "setGameLevel(3)">EXPERT</button>
+    </div>
+    <div class="game" style="display: none;">
         <header>       
             <button class = "reset" style = "visibility: hidden">TRY AGAIN</button>
             <p class="flagNumber"></p><img  class= "flagIcon" src = "../pictures/flag.png" alt="flag" style="width:23px">            
             <p class="clock">000</p><img class="timer" src = "../pictures/timer.png" style="width:23px">
         </header>
         <div class = "grid"></div>
-    </div>   
+    </div>  
 </body>
 </html>

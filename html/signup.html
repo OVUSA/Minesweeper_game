@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>Minesweeper login page</title>
     <link rel = "stylesheet"  type ="text/css" href = "../css/signup_style.css">
-    <script src = "../js/login.js"></script>
 </head>
     <body>
         <main>
@@ -14,14 +13,15 @@
                     <input type ="text" id="name" placeholder="Your name..">
                     <label for ="password"> Password</label>
                     <input type = "text" id="password"placeholder = "Your password..">
-                    <button id="btn">Submit</button>
+                    <button id="btn" onclick=createUser()>Submit</button>
                 </form>
             </section>
 
             <section class="guest">
                 <button onclick=selectLevel()>Play as a Guest</button>   
             </section>
-        </main>       
-    <script type="module" src = "../js/User.js"></script>
+        </main> 
+    <script src = "../js/game.js"></script>     
+    <script src = "../js/login.js"></script> 
 </body>
 </html>

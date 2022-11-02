@@ -23,7 +23,7 @@ section{
     height: 300px;
 }
 /* First state of the game */
-section button{
+.levels button{
     transform: translateY(-50%);
     transform: translateX(85%);
     display:block;
