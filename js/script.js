@@ -2,8 +2,10 @@
 class User {
 
        userId = () => { id = 0; return id++; }
+       userGames = [];
        userGame = new Game();
-       username=null;
+       userName = null;
+       userPassword = null;
 
        constructor(username, password) {
               this.username = username;
@@ -18,23 +20,16 @@ class User {
 
 let currentUser;
 
-function selectLevel() {
-       window.location.href = "../html/levels.html";
-}
-
 function createUser() {
 
-      // const getUsernameBtn = document.getElementById("btn");
-       
-      // getUsernameBtn.addEventListener('click', () => {
-              currentUser = new User(document.getElementById('name').value,document.getElementById('password').value);
-              //currentUser.password = document.getElementById('password').value;
-              console.log(`username = ${currentUser.username}`);
-      // })
+       currentUser = new User(document.getElementById('name').value,document.getElementById('password').value);
+       console.log(`username = ${currentUser.username}`);
+       window.location.href = "../html/game.html";
+
 }
 
-
-
-
-
-   // Game functionality
+function guestGame() {
+       currentUser= new User("Guess",null);
+       userGame.user = currentUser;
+       window.location.href = "../html/game.html";
+}
