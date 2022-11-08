@@ -1,0 +1,33 @@
+.content {
+  grid-area: content;
+  display: grid;
+  grid-template-areas:
+    "items";
+  grid-template-columns: 1fr;
+  align-self: center;
+  justify-self: center;
+  align-items: center;
+  background-color: #488588;
+  border: 1px solid #aaa;
+}
+
+.grid {
+  grid-area: items;
+  display: grid;
+  grid-template-columns: repeat(11, 26px);
+  grid-template-rows: repeat(11, 26px); 
+}
+
+.grid div {
+  margin: 0;
+  list-style-type: none;
+  background-color: #10C5D0;
+  color: #fff;
+  padding: 10%;
+}
+
+.grid div:nth-child(even) {
+  border: 1px solid #ccc;
+  background-color:#83DADF ;
+  color: #333;
+}
