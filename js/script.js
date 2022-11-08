@@ -54,14 +54,19 @@ function setGameLevel(id) {
 
             //  this.currentGame.level = "Beginner";
              // console.log(this.currentGame.level);
-              createBoard(100, 10);
+              createBoard(99, 10);
+              //11 columns
        } else if (id == "2") {
               console.log("Intermediate")
-              //createBoard(256,40);
+              createBoard(255,40);
+              //17
        } else {
               console.log("Expert")
               //window.location.href = "game.html"; 
-              // createBoard(400,99);
+              createBoard(399,99);
+              //repeat(21, 26px);
+              //
+              //
        }
 }
 
