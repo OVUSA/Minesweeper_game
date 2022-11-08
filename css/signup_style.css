@@ -1,7 +1,8 @@
 
 #main{
-width: 60%;
+width: 40%;
 margin: 5% 20%;
+margin-left: 25%;
 border: 3px outset white;
 background-color:#d6d3d3;
 padding: 35px 35px;
@@ -19,17 +20,17 @@ input[type=text], input[type=password] {
     border-radius: 5px ;
     border: 1px solid #ccc;
 }
-.left {
+.right {
   grid-column: 4 / 7;
   padding-top: 26px;
   grid-row: 2/4;
 
 }
 
-.center-top {
+.left {
   grid-column: 1 / 4;
   grid-row: 1/ 4;
-  border-right: px solid whitesmoke;
+  border-right: 1px solid whitesmoke;
 }
 .wrapper {
   display:grid;
@@ -39,7 +40,7 @@ input[type=text], input[type=password] {
 
 button{
   height: 35px;
-  width: 100%;
+  width: 80%;
   background-color: rgb(96, 182, 221);
   border: 0.5px solid rgb(0, 0, 0);
   font-size: 16px;
@@ -48,13 +49,14 @@ button{
   letter-spacing: 1px;
   text-align: center;
   border-radius: 8px;
+  margin-left: 10%;
 }
 
 label{
   font-size: larger;
   font-family: Arial, Helvetica, sans-serif;
 }
-.left button{
+.right button{
   height: 40px;
   padding-bottom:3px ;
 }
