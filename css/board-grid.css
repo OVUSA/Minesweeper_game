@@ -2,7 +2,7 @@
   grid-area: content;
   display: grid;
   grid-template-areas:
-    "items";
+    "grid";
   grid-template-columns: 1fr;
   align-self: center;
   justify-self: center;
@@ -11,23 +11,25 @@
   border: 1px solid #aaa;
 }
 
+/* columns are set in script.js file -boardUI()*/
 .grid {
-  grid-area: items;
   display: grid;
-  grid-template-columns: repeat(11, 26px);
-  grid-template-rows: repeat(11, 26px); 
+  border: 1px solid black;
 }
 
 .grid div {
-  margin: 0;
+  margin:0;
   list-style-type: none;
   background-color: #10C5D0;
   color: #fff;
-  padding: 10%;
+  padding: 13%;
 }
 
 .grid div:nth-child(even) {
   border: 1px solid #ccc;
   background-color:#83DADF ;
   color: #333;
+}
+.grid div:nth-child(even):hover {
+ background-color: yellow;
 }

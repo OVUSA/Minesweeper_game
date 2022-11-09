@@ -6,24 +6,28 @@
         <meta name="OlgaVelichko" content="Game">
         <title> MineSweeper Game</title>
         <link rel = "stylesheet" href = "../css/style.css"></link>
+        <link rel = "stylesheet" href = "../css/board-grid.css"></link>
       
         <script src = "../js/script.js"></script> 
     </head>
 <body>
     <h1> MINESWEEPER</h1>
-    <div class="levels">
-        <button  onclick = "setGameLevel(1)" >BEGINNER</button>
-        <button  onclick = "setGameLevel(2)">INTERMEDIATE</button>
-        <button  onclick = "setGameLevel(3)">EXPERT</button>
+    <div class = "wrapper">        
+        <div class="levels">
+            <button  onclick = "setGameLevel(1)" >BEGINNER</button>
+            <button  onclick = "setGameLevel(2)">INTERMEDIATE</button>
+            <button  onclick = "setGameLevel(3)">EXPERT</button>
+        </div>
+        <div class="game" style="display: none;">          
+            <header>       
+                <button class = "reset" style = "visibility: hidden">TRY AGAIN</button>
+                <p class="flagNumber"></p><img  class= "flagIcon" src = "../pictures/flag.png" alt="flag" style="width:23px">            
+                <p class="clock">000</p><img class="timer" src = "../pictures/timer.png" style="width:21px">
+            </header>
+            <div class = "content">
+                <div class = "grid"></div>   
+            </div>        
+        </div>  
     </div>
-    <div class="game" style="display: none;">
-        <div class = "userInfo"></div>
-        <header>       
-            <button class = "reset" style = "visibility: hidden">TRY AGAIN</button>
-            <p class="flagNumber"></p><img  class= "flagIcon" src = "../pictures/flag.png" alt="flag" style="width:23px">            
-            <p class="clock">000</p><img class="timer" src = "../pictures/timer.png" style="width:23px">
-        </header>
-        <div class = "grid"></div>
-    </div>  
 </body>
 </html>

@@ -1,51 +1,46 @@
-body {
-    margin: auto;
-    width: 540px; 
-    height: 550px;
-    padding: 50px;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #B9B9B9;    
+/*Iphone12 width is 414px*/
+@media (min-width: 400px) {
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #B9B9B9;    
+    }
+    .wrapper{
+        display: grid;
+        justify-content: center;
+        align-content: center;
+    }
 }
-/* First state of the game*/
+
+/*MINESWEEPER header*/
 h1{
-    background-color:#B9B9B9 ;
     font-size: 40px;
     text-align: center;
     font-style: normal;
     font-weight: normal;
     letter-spacing: 8px;
     margin: 0;
-    padding: 25px 0px 35px 20px;
+    padding: 1% 0px 2.5% 1%;
 }
-/* First state of the game*/
-section{
-    background-color:#B9B9B9 ;
-    height: 300px;
-}
-/* First state of the game */
+
 .levels button{
-    transform: translateY(-50%);
-    transform: translateX(85%);
     display:block;
-    justify-content: center;
     text-align: center;
     margin-bottom: 10px;
     padding: auto;
     border: 0.2px solid black;
     border-radius: 4px;
-    width: 200px;
+    width: 160px;
     height: 60px;
-    font-size: large;
+    font-size:15px;
     background-color: #B9B9B9;
 }
-/* First state of the game*/
+/* level buttons*/
 button:hover{
     background-color: aliceblue;
     border: outset darkgray;
 }
 
-/* Second state of the game*/
-
+/* A header of the board */
 header{
     margin: auto;   
     border-top: 2px solid black;
@@ -53,36 +48,14 @@ header{
     border-right: 2px solid black;
     padding: 10px;
     background-color: #00A1B7;   
-    width: 320px;
     margin-bottom: 0px;
 }
-/* board*/
-.grid{
-    margin: auto;
-    height:370px;
-    width: 340px;
-    display: flex;
-    flex-wrap :wrap;
-    background-color: #488588;
-    border-bottom: 2px solid black;
-    border-left: 2px solid black;
-    border-right: 2px solid black;
 
-}
-.grid div{
-    margin: 0px;; 
-    padding: 2px;  
-    padding-bottom: 4px;
-    padding-top: 2px;
-    height: 30px;
-    width: 30px;    
-    background-color: #10C5D0;
-    border: none;
-}
 .grid div:hover{
     background-color: yellow;  
 }
-/*button is hidden in Second state but appers in THIRD*/
+
+/*button is hidden until user clicks on the board*/
 button.reset{  
     display: inline;
     height: 30px;
@@ -94,10 +67,7 @@ button.reset{
     letter-spacing: 2px;
     border-radius: 3px;
     padding: 5px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    
-    
+    font-size: 11px;   
 }
 button.reset:hover{
     border: 1px inset white;
@@ -107,35 +77,17 @@ button.reset:active {
     background-color: white;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
-  }
+}
 
 .flagNumber{   
     display: inline;
     font-size:22px;
-    color:black;
-    margin: auto;
-    margin-left: 20px;          
-}
-
-.grid div:nth-child(odd){
-	background-color:#83DADF ;
-}   
-.grid div:nth-child(odd):hover{
-	background-color:yellow ;
+    color:black;    
 }
 
 .clock{
-    display: inline;
+    display:inline;
     font-size: 22px;
     color:black;
-    margin-left:10px ; 
-    margin-right: 8px;
+    padding-right: 10px;  
 }
-h1.SecondState{
-    letter-spacing: 20px;
-    margin-top: 0;
-}
-
-
-
-

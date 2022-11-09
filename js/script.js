@@ -30,7 +30,8 @@ function createUser() {
 
        currentUser = new User(document.getElementById('name').value, document.getElementById('password').value);
        console.log(`username = ${currentUser.username}`);
-       currentUser.addGame(new Game());
+       currentGame = new Game();
+       currentUser.addGame(currentGame);
        window.location.href = "../html/game.html";
 }
 
@@ -51,31 +52,19 @@ function setGameLevel(id) {
        game.style.display = "block";
 
        if (id == "1") {
-
-            //  this.currentGame.level = "Beginner";
-             // console.log(this.currentGame.level);
-              createBoard(99, 10);
-              //11 columns
+              createBoard(99, 10, 1);
        } else if (id == "2") {
-              console.log("Intermediate")
-              createBoard(255,40);
-              //17
+              createBoard(255, 40, 2);
        } else {
-              console.log("Expert")
-              //window.location.href = "game.html"; 
-              createBoard(399,99);
-              //repeat(21, 26px);
-              //
-              //
+              createBoard(400, 99, 3);
        }
 }
 
 
-
-function createBoard(numberCells, numberBombs) {
-
+function createBoard(numberCells, numberBombs, level) {
        const grid = document.querySelector('.grid');
        let flagCount = document.querySelector('.flagNumber');
+       boardUI(level,grid);
 
        let flags = 10;
        let squares = [];
@@ -96,10 +85,22 @@ function createBoard(numberCells, numberBombs) {
               square.addEventListener('mouseup', (e) => {
                      changeVisibility();
                      mouseClick(square, e);
-
               });
        }
+}
+function boardUI(level,grid){
+       if (level == 1) {
+              grid.style.gridTemplateColumns = "repeat(11, 26px)";
+              grid.style.gridTemplateRows = "repeat(9, 26px)";
 
+       } else if (level == 2) {
+              grid.style.gridTemplateColumns = "repeat(17, 24px)";
+              grid.style.gridTemplateRows = "repeat(15, 24px)";
+
+       } else {
+              grid.style.gridTemplateColumns = "repeat(25, 21px)";
+              grid.style.gridTemplateRows = "repeat(16, 21px)";
+       }
 }
 
 function mouseClick(square, e) {
