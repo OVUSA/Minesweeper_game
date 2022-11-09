@@ -41,6 +41,10 @@ function guestGame() {
        currentUser.addGame(currentGame);
        window.location.href = "../html/game.html";
 }
+//TODO : add +1 game to current user
+function reset(){
+       window.location.href = "../html/game.html";
+}
 
 
 
