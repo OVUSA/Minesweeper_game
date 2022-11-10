@@ -140,6 +140,11 @@ function checkTheCell(squareClass) {
               return false;
        }
 }
+function activatePopUp(){
+       let popUp = document.querySelector('.popUp');
+       popUp.style.visibility="visible";
+       popUp.innerHTML = "You lost";
+}
 
 function exposeAllMines() {
        var sq = document.querySelectorAll('.bomb')
@@ -152,6 +157,7 @@ function exposeAllMines() {
               //     origin: { y: 0.6 }
               //   });
        });
+       activatePopUp();
 }
 
 

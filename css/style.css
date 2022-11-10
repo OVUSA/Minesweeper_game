@@ -91,3 +91,11 @@ button.reset:active {
     color:black;
     padding-right: 10px;  
 }
+.popUp{
+    padding: 30px;
+    background-color: yellow;
+    color:black;
+    font-weight: bolder;
+    z-index: 1;
+
+}
