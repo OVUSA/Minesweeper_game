@@ -15,14 +15,14 @@
     <div class = "wrapper">        
         <div class="levels">
             <button  onclick = setGameLevel(1) >BEGINNER</button>
-            <button  onclick = "setGameLevel(2)">INTERMEDIATE</button>
-            <button  onclick = "setGameLevel(3)">EXPERT</button>
+            <button  onclick = setGameLevel(2)>INTERMEDIATE</button>
+            <button  onclick = setGameLevel(3)>EXPERT</button>
         </div>
         <div class="game" style="display: none;">          
-            <header>       
+            <header class="container">       
                 <button  class = "reset" style = "visibility: hidden" onclick = reset()>TRY AGAIN</button>
-                <p class="flagNumber"></p><img  class= "flagIcon" src = "../pictures/flag.png" alt="flag" style="width:23px">            
-                <p class="clock">000</p><img class="timer" src = "../pictures/timer.png" style="width:21px">
+                <p class="flagNumber"><img  class= "flagIcon" src = "../pictures/flag.png" alt="flag" style="width:23px"></p>        
+                <p class="clock">000<img class="timer" src = "../pictures/timer.png" style="width:21px"> </p>
             </header>
             <div class = "content">
                 <div class = "grid"></div>   
