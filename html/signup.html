@@ -8,19 +8,19 @@
     <body>
         <section id="main" class="wrapper">
             <div class="box left">
-                <form  id="signup">
+                <form  id="signup" onsubmit="return false;">
                     <label for = "name">User name</label>
-                    <input type ="text" id="name" placeholder="Your name..">
+                    <input type ="text" class="name" placeholder="Your name..">
                     <label for ="password"> Password</label>
-                    <input type = "text" id="password"placeholder = "Your password..">
-                    <button id="btn" onclick=createUser()>Submit</button>
+                    <input type = "text" class="password"placeholder = "Your password..">
+                    <button onclick=createUser()>Submit</button>   
                 </form>
             </div>
 
             <div class="box right">
                 <button onclick=guestGame()>Play as a Guest</button>   
             </div>
-        </section>  
-    <script src = "../js/script.js"></script> 
+        </section>         
+    <script src = "../js/script.js"></script>      
 </body>
 </html>
