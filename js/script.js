@@ -1,54 +1,58 @@
-// User functions
-class User {
 
-       userId = () => { id = 0; return id++; }
-       userGames = [];
-       userName = null;
-       password = null;
-
-       constructor(username, password) {
-              this.userName = username;
-              this.password = password;
-       }
-
-       addGame(game) {
-              this.userGames[this.userGames.length] = game;
-       }
-}
-class Game {
-
-       id = () => { id = 0; return id++; }
-       gameStatus = "pending"
-       level = "NaN";
-       duration = 0;
-
-}
+let allPlayers =[];
 let currentUser;
 let currentGame;
 
-function createUser() {
-
-       currentUser = new User(document.getElementById('name').value, document.getElementById('password').value);
-       console.log(`username = ${currentUser.username}`);
-       currentGame = new Game();
-       currentUser.addGame(currentGame);
-       window.location.href = "../html/game.html";
+class User{
+       userGames=[]
+       constructor(name, password){
+              this.name = name;
+              this.password=password;
+              this.userID=allPlayers.length+1;
+       }
+       addGame(gameLevel){
+              this.userGames.push(gameLevel);
+       }
+       bio(){
+              console.log(`${this.name} has ${this.userID} as ID , played games ${this.userGames.length}` );
+       }
 }
-
+class Game {
+       constructor(level){
+              this.gameStatus="pending",
+              this.level = level,
+              this.duration = 0,
+              this.id = 1;
+       }
+       updateStatus(status){
+              this.gameStatus = status;             
+       }
+       updateDuration(time){
+              this.duration = time;
+       }
+       gameResult(){
+              return `${this.id} game, level: ${this.level} , status ${this.status}`;
+       }
+}
+function createUser(){
+       let name = document.querySelector('.name').value;
+       let password = document.querySelector('.password').value;
+       currentUser = new User(name,password);      
+       window.location.href = "../html/game.html";
+   }
 function guestGame() {
-       currentUser = new User("Guess", null);
-       currentGame = new Game();
-       currentUser.addGame(currentGame);
+       // currentUser = Object.create(User);
+       // currentUser.userName = "Guess";
+       // 
+       // User.prototype.addGame(currentGame);
+       // console.log(currentUser.prototype)
+       window.location.href = "../html/game.html";
+
+}
+function reset() {
        window.location.href = "../html/game.html";
 }
-//TODO : add +1 game to current user
-function reset(){
-       window.location.href = "../html/game.html";
-}
-
-
-
-function setGameLevel(id) {
+function setGameLevel(id) {     
        let section = document.querySelector('.levels');
        section.style.display = "none";
 
@@ -56,19 +60,25 @@ function setGameLevel(id) {
        game.style.display = "block";
 
        if (id == "1") {
+              currentGame = new Game("Beginner");
               createBoard(99, 10, 1);
        } else if (id == "2") {
+              currentGame = new Game("Intermediate");
               createBoard(255, 40, 2);
        } else {
+              currentGame = new Game("Expert");                     
               createBoard(400, 99, 3);
        }
+       currentUser.addGame(currentGame);
+       console.log(currentUser.bio());
+
 }
 
 
 function createBoard(numberCells, numberBombs, level) {
        const grid = document.querySelector('.grid');
        let flagCount = document.querySelector('.flagNumber');
-       boardUI(level,grid);
+       boardUI(level, grid);
 
        let flags = 10;
        let squares = [];
@@ -92,7 +102,7 @@ function createBoard(numberCells, numberBombs, level) {
               });
        }
 }
-function boardUI(level,grid){
+function boardUI(level, grid) {
        if (level == 1) {
               grid.style.gridTemplateColumns = "repeat(11, 26px)";
               grid.style.gridTemplateRows = "repeat(9, 26px)";
@@ -140,9 +150,9 @@ function checkTheCell(squareClass) {
               return false;
        }
 }
-function activatePopUp(){
+function activatePopUp() {
        let popUp = document.querySelector('.popUp');
-       popUp.style.visibility="visible";
+       popUp.style.visibility = "visible";
        popUp.innerHTML = "You lost";
 }
 
