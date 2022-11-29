@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Minesweeper login page</title>
+    <link rel="stylesheet" type="text/css" href="../css/signup_style.css">
+    <link rel="stylesheet" href="../css/style.css">
+    </link>
+    <link rel="stylesheet" href="../css/board-grid.css">
+    </link>
+</head>
+
+<body>
+    <h1> MINESWEEPER</h1>
+    <section id="main" class="SignUpwrapper">
+        <div class="box left">
+            <form id="signup" onsubmit="return false;">
+                <label for="name">User name</label>
+                <input type="text" class="name" placeholder="Your name..">
+                <label for="password"> Password</label>
+                <input type="text" class="password" placeholder="Your password..">
+                <button onclick=createUser()>Submit</button>
+            </form>
+        </div>
+
+        <div class="box right">
+            <button onclick=guestGame()>Play as a Guest</button>
+        </div>
+    </section>
+
+    <div class="wrapper">
+        <div class="levels" style="visibility: hidden">
+            <button onclick=setGameLevel(1)>BEGINNER</button>
+            <button onclick=setGameLevel(2)>INTERMEDIATE</button>
+            <button onclick=setGameLevel(3)>EXPERT</button>
+        </div>
+        <div class="game" style="display: none;">
+            <header class="container">
+                <button class="reset" style="visibility: hidden" onclick=reset()>TRY AGAIN</button>
+                <img class="flagIcon" src="../pictures/flag.png" alt="flag">
+                <div class="flagNumber"></div>
+                <img class="timer" src="../pictures/timer.png" style="width:19px">
+                <div class="clock">00 </div>
+            </header>
+            <div class="content">
+                <div class="grid"></div>
+            </div>
+            <div class="popUp" style="visibility: hidden"></div>
+        </div>
+    </div>
+
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
