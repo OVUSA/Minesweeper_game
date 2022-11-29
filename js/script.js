@@ -30,6 +30,21 @@ function User(name,password){
        //    });
 }
 function createUser(){
+       // let name = document.querySelector('.name').value;
+       // let password = document.querySelector('.password').value;
+       // currentUser = new User(name,password); 
+
+       // localStorage.setItem('player', JSON.stringify(currentUser));
+
+       // // let storedUser = JSON.stringify(currentUser);
+       // // localStorage.setItem('player',storedUser);  
+       
+       // reset();// redirect to game with levels
+   }
+
+
+   //saving the object in localStorage
+   function localStorage(currentUser){
        let name = document.querySelector('.name').value;
        let password = document.querySelector('.password').value;
        currentUser = new User(name,password); 

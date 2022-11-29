@@ -20,6 +20,38 @@
                 <button onclick=guestGame()>Play as a Guest</button>   
             </div>
         </section>         
-    <script src = "../js/script.js"></script>    
+    <script src = "../js/script.js"></script>   
+    <script>
+
+    function createUser(){
+       localStorage.clear();
+       let name = document.querySelector('.name').value;
+       let password = document.querySelector('.password').value;
+       const currentUser = new User(name,password); 
+       console.log(currentUser)
+
+      localStorage.setItem('player', JSON.stringify(currentUser));
+
+      window.location.href = "../html/game.html";
+
+       // let storedUser = JSON.stringify(currentUser);
+       // localStorage.setItem('player',storedUser);  
+    
+   }
+
+
+   //saving the object in localStorage
+   function localStorage(currentUser){
+       let storedUser = JSON.stringify(currentUser);
+       localStorage.setItem('player',storedUser); 
+   }
+
+
+function guestGame() {
+       currentUser = new User("Guess",null);  
+       localStorage(currentUser);
+       window.location.href = "../html/game.html";
+}
+    </script> 
 </body>
 </html>
