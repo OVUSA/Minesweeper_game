@@ -30,26 +30,32 @@ function User(name,password){
        //    });
 }
 function createUser(){
-       let name = document.querySelector('.name').value;
-       let password = document.querySelector('.password').value;
-       currentUser = new User(name,password);   
+       // let name = document.querySelector('.name').value;
+       // let password = document.querySelector('.password').value;
+       // currentUser = new User(name,password); 
 
-       //saving the object in localStorage
+       // localStorage.setItem('player', JSON.stringify(currentUser));
+
+       // // let storedUser = JSON.stringify(currentUser);
+       // // localStorage.setItem('player',storedUser);  
+       
+       // reset();// redirect to game with levels
+   }
+
+
+   //saving the object in localStorage
+   function localStorage(currentUser){
        let storedUser = JSON.stringify(currentUser);
-       localStorage.setItem('player',storedUser);   
-       window.location.href = "../html/game.html";
+       localStorage.setItem('player',storedUser); 
    }
 
 
 function guestGame() {
-       // currentUser = Object.create(User);
-       // currentUser.userName = "Guess";
-       // 
-       // User.prototype.addGame(currentGame);
-       // console.log(currentUser.prototype)
-       //window.location.href = "../html/game.html";
-
+       // currentUser = new User("Guess",null);  
+       // localStorage(currentUser);
+       // window.location.href = "../html/game.html";
 }
+
 function reset() {
        window.location.href = "../html/game.html";
 }
@@ -70,9 +76,9 @@ function setGameLevel(id) {
               currentGame = new Game("Expert");                     
               createBoard(400, 99, 3);
        }
-       currentUser = localStorage.getItem('player');
+       var loadedTodos = JSON.parse(localStorage.getItem('player'));
 
-       console.log('retrievedObject: ', JSON.parse(currentUser));
+       console.log('retrievedObject: ', JSON.parse(loadedTodos));
        //currentUser.gamesSet(currentGame);    
       // console.log(currentUser.getUserName);  
 }
