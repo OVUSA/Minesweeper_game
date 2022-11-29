@@ -22,7 +22,7 @@ input[type=text], input[type=password] {
     border-radius: 5px ;
     border: 1px solid #ccc;
 }
-.wrapper {
+.SignUpwrapper {
   display:grid;
   grid-template-columns: repeat(6, 1fr); 
   grid-template-rows: repeat(3, 1fr);
@@ -42,8 +42,8 @@ input[type=text], input[type=password] {
 button{
   height: 35px;
   width: 80%;
-  background-color: rgb(96, 182, 221);
-  border: 0.5px solid rgb(0, 0, 0);
+  background-color: #10C5D0;
+  border: 0.5px solid white;
   font-size: 16px;
   font-weight: bolder;
   letter-spacing: 1px;
