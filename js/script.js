@@ -14,35 +14,40 @@ function User(name,password){
        this.games = []
        this.bio = `${this.name} played ${this.games.length}`   
 
-       Object.defineProperty(User,"name",{
-              get:function getUserName(){
-                     return this.name;
-              }
-       })
+       // Object.defineProperty(User,"name",{
+       //        get:function getUserName(){
+       //               return this.name;
+       //        }
+       // })
       
-       Object.defineProperty(User, "games", {
-              get: function gamesGet() {
-                  return games.ToString();
-              },
-              set : function gamesSet(gameLevel){
-                     games.push(gameLevel)
-              }
-          });
+       // Object.defineProperty(User, "games", {
+       //        get: function gamesGet() {
+       //            return games.ToString();
+       //        },
+       //        set : function gamesSet(gameLevel){
+       //               games.push(gameLevel)
+       //        }
+       //    });
 }
 function createUser(){
        let name = document.querySelector('.name').value;
        let password = document.querySelector('.password').value;
        currentUser = new User(name,password);   
-       console.log(currentUser.bio);     
+
+       //saving the object in localStorage
+       let storedUser = JSON.stringify(currentUser);
+       localStorage.setItem('player',storedUser);   
        window.location.href = "../html/game.html";
    }
+
+
 function guestGame() {
        // currentUser = Object.create(User);
        // currentUser.userName = "Guess";
        // 
        // User.prototype.addGame(currentGame);
        // console.log(currentUser.prototype)
-       window.location.href = "../html/game.html";
+       //window.location.href = "../html/game.html";
 
 }
 function reset() {
@@ -65,8 +70,11 @@ function setGameLevel(id) {
               currentGame = new Game("Expert");                     
               createBoard(400, 99, 3);
        }
-       currentUser.gamesSet(currentGame);    
-       console.log(currentUser.getUserName);  
+       currentUser = localStorage.getItem('player');
+
+       console.log('retrievedObject: ', JSON.parse(currentUser));
+       //currentUser.gamesSet(currentGame);    
+      // console.log(currentUser.getUserName);  
 }
 class Game {
        constructor(level){
