@@ -49,8 +49,24 @@ header{
     padding: 10px;
     background-color: #00A1B7;   
     margin-bottom: 0px;
+    
 }
-
+.container{
+    display:flex;
+    justify-content: end;
+    align-content: space-between;
+    
+}
+.container div{
+    flex: 4;
+    align-self: center;
+    align-content: space-between;
+    justify-content: end;
+    
+}
+.container button{
+    align-self: center;
+}
 .grid div:hover{
     background-color: yellow;  
 }
@@ -83,13 +99,14 @@ button.reset:active {
     display: inline;
     font-size:22px;
     color:black;    
+    
 }
 
 .clock{
     display:inline;
     font-size: 22px;
     color:black;
-    padding-right: 10px;  
+    padding-left: 3px;  
 }
 .popUp{
     padding: 30px;
@@ -99,3 +116,19 @@ button.reset:active {
     z-index: 1;
 
 }
+.flagIcon{
+    width:23px;
+    height: 23px;
+    align-content: center;
+    margin-top: 10px;
+    margin-left: 0px;
+}
+.timer{
+    width:30px;
+    height: 26px;
+    align-content: right;
+    margin-top: 10px;
+    margin-left: 20px;
+    
+}
+

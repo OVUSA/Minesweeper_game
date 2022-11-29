@@ -25,6 +25,7 @@
   padding: 13%;
 }
 
+
 .grid div:nth-child(even) {
   border: 1px solid #ccc;
   background-color:#83DADF ;
@@ -33,3 +34,4 @@
 .grid div:nth-child(even):hover {
  background-color: yellow;
 }
+

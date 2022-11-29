@@ -1,43 +1,39 @@
 
 let allPlayers =[];
-let currentUser;
+let allGame = [];
+var currentUser;
 let currentGame;
+let grid;
+let flagCount;
 
-class User{
-       userGames=[]
-       constructor(name, password){
-              this.name = name;
-              this.password=password;
-              this.userID=allPlayers.length+1;
-       }
-       addGame(gameLevel){
-              this.userGames.push(gameLevel);
-       }
-       bio(){
-              console.log(`${this.name} has ${this.userID} as ID , played games ${this.userGames.length}` );
-       }
-}
-class Game {
-       constructor(level){
-              this.gameStatus="pending",
-              this.level = level,
-              this.duration = 0,
-              this.id = 1;
-       }
-       updateStatus(status){
-              this.gameStatus = status;             
-       }
-       updateDuration(time){
-              this.duration = time;
-       }
-       gameResult(){
-              return `${this.id} game, level: ${this.level} , status ${this.status}`;
-       }
+
+function User(name,password){   
+       this.name=name;
+       this.password=password;
+       User.prototype.userID = allPlayers.length+1;
+       this.games = []
+       this.bio = `${this.name} played ${this.games.length}`   
+
+       Object.defineProperty(User,"name",{
+              get:function getUserName(){
+                     return this.name;
+              }
+       })
+      
+       Object.defineProperty(User, "games", {
+              get: function gamesGet() {
+                  return games.ToString();
+              },
+              set : function gamesSet(gameLevel){
+                     games.push(gameLevel)
+              }
+          });
 }
 function createUser(){
        let name = document.querySelector('.name').value;
        let password = document.querySelector('.password').value;
-       currentUser = new User(name,password);      
+       currentUser = new User(name,password);   
+       console.log(currentUser.bio);     
        window.location.href = "../html/game.html";
    }
 function guestGame() {
@@ -69,21 +65,36 @@ function setGameLevel(id) {
               currentGame = new Game("Expert");                     
               createBoard(400, 99, 3);
        }
-       currentUser.addGame(currentGame);
-       console.log(currentUser.bio());
-
+       currentUser.gamesSet(currentGame);    
+       console.log(currentUser.getUserName);  
 }
-
-
+class Game {
+       constructor(level){
+              this.gameStatus="pending",
+              this.level = level,
+              this.duration = 0,
+              this.id = 1;
+       }
+       updateStatus(status){
+              this.gameStatus = status;             
+       }
+       updateDuration(time){
+              this.duration = time;
+       }
+       gameResult(){
+              return `${this.id} game, level: ${this.level} , status ${this.status}`;
+       }
+}
+ 
 function createBoard(numberCells, numberBombs, level) {
-       const grid = document.querySelector('.grid');
-       let flagCount = document.querySelector('.flagNumber');
+       grid = document.querySelector('.grid');
+       flagCount = document.querySelector('.flagNumber');
        boardUI(level, grid);
+       const initialFlags = numberBombs;
 
-       let flags = 10;
-       let squares = [];
-       //flagCount.innerHTML=numberBombs;
-       console.log("Creating game....");
+       let squares = [];//an array for the board
+       flagCount.innerHTML=initialFlags;
+
        const emptyCells = Array(numberCells - numberBombs).fill("valid");
        const bombs = Array(numberBombs).fill('bomb')
        const gameArray = emptyCells.concat(bombs);
@@ -94,11 +105,13 @@ function createBoard(numberCells, numberBombs, level) {
               const square = document.createElement('div')
               square.setAttribute('id', i)
               square.classList.add(shuffleArrays[i]);
+           
               grid.appendChild(square)
               squares.push(square)
               square.addEventListener('mouseup', (e) => {
                      changeVisibility();
-                     mouseClick(square, e);
+                   initialFlags=  mouseClick(square, e,initialFlags);
+                  flagCount.innerHTML=initialFlags;
               });
        }
 }
@@ -117,7 +130,7 @@ function boardUI(level, grid) {
        }
 }
 
-function mouseClick(square, e) {
+function mouseClick(square, e,flagCount) {
        switch (e.button) {
               case 0:
                      //left
@@ -127,14 +140,14 @@ function mouseClick(square, e) {
                             // square.setAttribute("src","bomb.png");
                      } else {
                             square.style.backgroundColor = "#D9D9D9";
-                            square.style.border = "white";
+                            square.style.border = "1px solid blue";
                      }
                      break;
               case 2:
                      //right
                      square.innerHTML = "&#128681"
-                     flags--;
-                     flagCount.innerHTML = flags;
+                     flagCount.innerHTML= flagCount--;
+                     
                      break;
               default:
                      console.log(`Unknown button code: ${e.button}`);
@@ -154,6 +167,13 @@ function activatePopUp() {
        let popUp = document.querySelector('.popUp');
        popUp.style.visibility = "visible";
        popUp.innerHTML = "You lost";
+       currentGame.gameStatus="Lost";
+       allGame.push(currentGame);
+       console.log(allGame);  
+}
+
+function JsonTheGame(){
+
 }
 
 function exposeAllMines() {
@@ -168,6 +188,11 @@ function exposeAllMines() {
               //   });
        });
        activatePopUp();
+       disactivateBoard();
+}
+function disactivateBoard(){
+       const grid = document.querySelector('.grid');
+grid.style.pointerEvents = 'none';
 }
 
 

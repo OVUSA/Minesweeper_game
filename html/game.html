@@ -6,8 +6,7 @@
         <meta name="OlgaVelichko" content="Game">
         <title> MineSweeper Game</title>
         <link rel = "stylesheet" href = "../css/style.css"></link>
-        <link rel = "stylesheet" href = "../css/board-grid.css"></link>
-      
+        <link rel = "stylesheet" href = "../css/board-grid.css"></link>     
         <script src = "../js/script.js"></script> 
     </head>
 <body>
@@ -21,8 +20,8 @@
         <div class="game" style="display: none;">          
             <header class="container">       
                 <button  class = "reset" style = "visibility: hidden" onclick = reset()>TRY AGAIN</button>
-                <p class="flagNumber"><img  class= "flagIcon" src = "../pictures/flag.png" alt="flag" style="width:23px"></p>        
-                <p class="clock">000<img class="timer" src = "../pictures/timer.png" style="width:21px"> </p>
+                <img class= "flagIcon" src = "../pictures/flag.png" alt="flag"><div class="flagNumber"></div>       
+                <img class="timer" src = "../pictures/timer.png" style="width:19px"><div class="clock">00 </div>
             </header>
             <div class = "content">
                 <div class = "grid"></div>   
