@@ -12,6 +12,15 @@
   .box {
     padding: 20px;
   }
+  h1{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    text-align: center;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: 8px;
+    margin-top: 20px;    
+}
   
   input[type=text], input[type=password] {
       width: 100%;
