@@ -1,81 +1,146 @@
 
-let allPlayers =[];
+let allPlayers = [];
 let allGame = [];
-var currentUser;
 let currentGame;
 let grid;
 let flagCount;
 
 
-function User(name,password){   
-       this.name=name;
-       this.password=password;
-       User.prototype.userID = allPlayers.length+1;
-       this.games = []
-       this.bio = `${this.name} played ${this.games.length}`   
-
-       // Object.defineProperty(User,"name",{
-       //        get:function getUserName(){
-       //               return this.name;
-       //        }
-       // })
-      
-       // Object.defineProperty(User, "games", {
-       //        get: function gamesGet() {
-       //            return games.ToString();
-       //        },
-       //        set : function gamesSet(gameLevel){
-       //               games.push(gameLevel)
-       //        }
-       //    });
+class User  {
+       name="";
+       password = "";
+       games = []      
+       addGame(cG){
+              this.games.push(cG);
+       }
+       bio = `${this.name} played ${this.games.length}`
 }
-function createUser(){
-       // let name = document.querySelector('.name').value;
-       // let password = document.querySelector('.password').value;
-       // currentUser = new User(name,password); 
-
-       // localStorage.setItem('player', JSON.stringify(currentUser));
-
-       // // let storedUser = JSON.stringify(currentUser);
-       // // localStorage.setItem('player',storedUser);  
+class Game {
        
-       // reset();// redirect to game with levels
-   }
+       constructor(level) {
+              this.gameStatus = "pending",
+              this.level = level,
+                     this.duration = 0,
+                     this.id = 1;
+       }
+       updateStatus(status) {
+              this.gameStatus = status;
+       }
+       updateDuration(time) {
+              this.duration = time;
+       }
+       gameResult() {
+              return `${this.id} game, level: ${this.level} , status ${this.status}`;
+       }
+}
+//initiate a global player
+var currentUser ;
+function createUser() {
 
-
-   //saving the object in localStorage
-   function localStorage(currentUser){
-       let name = document.querySelector('.name').value;
-       let password = document.querySelector('.password').value;
-       currentUser = new User(name,password); 
-
-       localStorage.setItem('player', JSON.stringify(currentUser));
-       window.location.href = "../html/game.html";
-
-       // // let storedUser = JSON.stringify(currentUser);
-       // // localStorage.setItem('player',storedUser);  
-       
-       // reset();// redirect to game with levels
-   }
-
-
-   //saving the object in localStorage
-   function localStorage(currentUser){
-       let storedUser = JSON.stringify(currentUser);
-       localStorage.setItem('player',storedUser); 
-   }
-
-
+       let nm = document.querySelector('.name').value;
+       let psw = document.querySelector('.password').value;
+       storage(nm, psw);
+       window.location.href = "../html/index.html";
+}
 function guestGame() {
-       // currentUser = new User("Guess",null);  
-       // localStorage(currentUser);
-       // window.location.href = "../html/game.html";
+       storage("Guest", null);
+       window.location.href = "../html/index.html";
 }
 
-function reset() {
-       window.location.href = "../html/game.html";
+
+//saving the object in IndexedDB
+function storage(nm, psw) {
+
+       const request = indexedDB.open("players", 1);
+
+       request.onerror = function (event) {
+              console.error("An error occured with IndexDB");
+              console.error(event);
+
+       };
+
+       request.onupgradeneeded = function () {
+              const db = request.result;
+              // defines the scheme of the db
+              const store = db.createObjectStore("users", { keyPath: "id" });
+              store.createIndex("user_name", ["name"], { unique: false })
+              store.createIndex("user_psw", ["password"], { unique: false })
+              store.createIndex('gameId',['gameID'],{keyPath:"gameId"});
+              store.createIndex('gameLevel',['Level'],{unique: false});
+              store.createIndex('gameStatus',['status'],{unique: false});
+       }
+
+       request.onsuccess = function () {
+
+              const db = request.result;
+              const transaction = db.transaction("users", "readwrite");
+
+              const store = transaction.objectStore("users");// db table
+
+              store.put({ id: 1, name: nm, password: psw });
+
+              const query = store.get(1);
+              
+              query.onsuccess = function () {
+                     console.log('query', query.result)
+              };
+             
+              transaction.oncomplete = function () {
+                     db.close();
+              }
+       }
 }
-function setGameLevel(id) {     
+//getting a userName from db and assigne it to currentUser
+function getItem (){  
+       currentUser =  new User();   
+       const request = indexedDB.open("players", 1);
+
+       request.onerror = function (event) {
+              console.error("An error occured with IndexDB");
+              console.error(event);
+       };
+       request.onupgradeneeded = function () {
+              const db = request.result;
+              // defines the scheme of the db
+              const store = db.createObjectStore("users", { keyPath: "id" });
+              store.createIndex("user_name", ["name"], { unique: false })
+              store.createIndex("user_psw", ["password"], { unique: false })
+              store.createIndex('gameId',['gameID'],{keyPath:"gameId"});
+              store.createIndex('gameLevel',['Level'],{unique: false});
+              store.createIndex('gameStatus',['status'],{unique: false});
+       }
+
+       request.onsuccess = function () {
+              
+              const db = request.result;
+              const transaction = db.transaction("users", "readwrite");
+
+              const store = transaction.objectStore("users");
+              const nameIndex = store.index("user_name");// look up the item 
+
+              const query = store.get(1);           
+
+              query.onsuccess = function () {
+                     console.log('query', query.result)
+                     currentUser.name = query.result.name
+                     currentUser.password = query.result.password
+                     console.log("Current user  "+currentUser.name);
+              };
+              transaction.oncomplete = function () {
+                     db.close();
+              }
+       }
+}
+var newGame = false;
+//creating new game here
+function reset() {
+       newGame=true;
+       window.location.href = "../html/index.html";
+}
+
+function setGameLevel(id) {
+       var status;
+
        let section = document.querySelector('.levels');
        section.style.display = "none";
 
@@ -83,39 +148,27 @@ function setGameLevel(id) {
        game.style.display = "block";
 
        if (id == "1") {
+              status = "Beginner"
               currentGame = new Game("Beginner");
               createBoard(99, 10, 1);
        } else if (id == "2") {
+              status = "Inter"
               currentGame = new Game("Intermediate");
               createBoard(255, 40, 2);
        } else {
-              currentGame = new Game("Expert");                     
+              currentGame = new Game("Expert");
               createBoard(400, 99, 3);
        }
-       var loadedTodos = JSON.parse(localStorage.getItem('player'));
+       
+       //check for reset, otherwise retrive data from db
+       if(!newGame){
+              getItem(); currentUser.addGame(currentGame);     
+       }else{
+              currentUser.addGame(new Game(status)); 
+       }  
+           
+}
 
-       console.log('retrievedObject: ', JSON.parse(loadedTodos));
-       //currentUser.gamesSet(currentGame);    
-      // console.log(currentUser.getUserName);  
-}
-class Game {
-       constructor(level){
-              this.gameStatus="pending",
-              this.level = level,
-              this.duration = 0,
-              this.id = 1;
-       }
-       updateStatus(status){
-              this.gameStatus = status;             
-       }
-       updateDuration(time){
-              this.duration = time;
-       }
-       gameResult(){
-              return `${this.id} game, level: ${this.level} , status ${this.status}`;
-       }
-}
- 
 function createBoard(numberCells, numberBombs, level) {
        grid = document.querySelector('.grid');
        flagCount = document.querySelector('.flagNumber');
@@ -123,7 +176,7 @@ function createBoard(numberCells, numberBombs, level) {
        const initialFlags = numberBombs;
 
        let squares = [];//an array for the board
-       flagCount.innerHTML=initialFlags;
+       flagCount.innerHTML = initialFlags;
 
        const emptyCells = Array(numberCells - numberBombs).fill("valid");
        const bombs = Array(numberBombs).fill('bomb')
@@ -135,13 +188,13 @@ function createBoard(numberCells, numberBombs, level) {
               const square = document.createElement('div')
               square.setAttribute('id', i)
               square.classList.add(shuffleArrays[i]);
-           
+
               grid.appendChild(square)
               squares.push(square)
               square.addEventListener('mouseup', (e) => {
                      changeVisibility();
-                   initialFlags=  mouseClick(square, e,initialFlags);
-                  flagCount.innerHTML=initialFlags;
+                     mouseClick(square, e, initialFlags);
+                    
               });
        }
 }
@@ -160,7 +213,7 @@ function boardUI(level, grid) {
        }
 }
 
-function mouseClick(square, e,flagCount) {
+function mouseClick(square, e, flagCount) {
        switch (e.button) {
               case 0:
                      //left
@@ -176,8 +229,8 @@ function mouseClick(square, e,flagCount) {
               case 2:
                      //right
                      square.innerHTML = "&#128681"
-                     flagCount.innerHTML= flagCount--;
-                     
+                     flagCount.innerHTML = flagCount--;
+
                      break;
               default:
                      console.log(`Unknown button code: ${e.button}`);
@@ -197,12 +250,12 @@ function activatePopUp() {
        let popUp = document.querySelector('.popUp');
        popUp.style.visibility = "visible";
        popUp.innerHTML = "You lost";
-       currentGame.gameStatus="Lost";
+       currentGame.gameStatus = "Lost";
        allGame.push(currentGame);
-       console.log(allGame);  
+       console.log(allGame);
 }
 
-function JsonTheGame(){
+function JsonTheGame() {
 
 }
 
@@ -219,10 +272,11 @@ function exposeAllMines() {
        });
        activatePopUp();
        disactivateBoard();
+       console.log(currentUser);
 }
-function disactivateBoard(){
+function disactivateBoard() {
        const grid = document.querySelector('.grid');
-grid.style.pointerEvents = 'none';
+       grid.style.pointerEvents = 'none';
 }
 
 
