@@ -52,17 +52,12 @@ header{
     
 }
 .container{
-    display:flex;
-    justify-content: end;
-    align-content: space-between;
-    
+    display:grid;
+    grid-template-columns: repeat(3, 0.5fr);
+    align-content: space-between;    
 }
 .container div{
-    flex: 4;
-    align-self: center;
-    align-content: space-between;
-    justify-content: end;
-    
+    align-content: end;      
 }
 .container button{
     align-self: center;
@@ -75,8 +70,8 @@ header{
 button.reset{  
     display: inline;
     height: 30px;
-    width: 105px;
-    margin: 10px 20px;   
+    min-width:105px;
+    margin: 10px 10px;   
     margin-bottom: 10px ;
     background-color: #00A1B7;
     border: 0.5px solid black;
@@ -97,16 +92,18 @@ button.reset:active {
 
 .flagNumber{   
     display: inline;
-    font-size:22px;
-    color:black;    
-    
+    font-size:20px;
+    color:black;  
+    align-content: center;
+    margin-top: 10px;   
 }
 
 .clock{
     display:inline;
-    font-size: 22px;
+    font-size: 20px;
     color:black;
-    padding-left: 3px;  
+    align-self: center;
+    align-content: space-between; 
 }
 .popUp{
     padding: 30px;
@@ -117,18 +114,18 @@ button.reset:active {
 
 }
 .flagIcon{
-    width:23px;
-    height: 23px;
+    width:20px;
+    height: 20px;
     align-content: center;
     margin-top: 10px;
-    margin-left: 0px;
+    margin-left:12%;
 }
 .timer{
     width:30px;
     height: 26px;
     align-content: right;
-    margin-top: 10px;
-    margin-left: 20px;
-    
+    margin-top: 5px;
+    align-self: center;
+    align-content: space-between;  
 }
 
