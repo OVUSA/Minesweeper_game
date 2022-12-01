@@ -21,7 +21,8 @@
   margin:0;
   list-style-type: none;
   background-color: #10C5D0;
-  color: #fff;
+  color: red;
+  font-weight: bolder;
   padding: 13%;
 }
 
@@ -29,7 +30,7 @@
 .grid div:nth-child(even) {
   border: 1px solid #ccc;
   background-color:#83DADF ;
-  color: #333;
+  
 }
 .grid div:nth-child(even):hover {
  background-color: yellow;
