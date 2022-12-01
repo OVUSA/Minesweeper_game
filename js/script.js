@@ -30,6 +30,27 @@ class Game {
               return `${this.id} game, level: ${this.level} , status ${this.status}`;
        }
 }
+
+function checkAdjacentCells(currentCell) {
+
+       let adCells = [currentCell.id - 11, currentCell.id - 12, currentCell.id - 10, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1];
+       console.log(adCells);
+       for (let i = 0; i < 3; i++) {
+              if (adCells[i] < 0) { continue; }
+
+              let adj = document.getElementById(adCells[i]);
+              if (adj.className != 'bomb') {
+                     if (adj.id % 2 == 0) {
+                            adj.style.backgroundColor = "#bfbfbf";
+                     } else {
+                            adj.style.backgroundColor = "#e6e6e6";
+                     }
+
+              } else if (currentCell.className != 'bomb') {
+                     currentCell.innerHTML = 1;
+              }
+       }
+}
 //initiate a global player
 var currentUser;
 function createUser() {
@@ -84,7 +105,7 @@ function storage(nm, psw) {
 }
 //getting a userName from db and assigne it to currentUser
 function getItem() {
-       console.log("Current Name")
+
        currentUser = new User();
        const request = indexedDB.open("players", 1);
 
@@ -188,6 +209,7 @@ function createBoard(numberCells, numberBombs, level) {
               square.addEventListener('mouseup', (e) => {
                      changeVisibility();
                      mouseClick(square, e, flagCount);
+                     checkAdjacentCells(square);
 
               });
        }
