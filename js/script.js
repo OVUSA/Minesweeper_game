@@ -2,24 +2,21 @@
 let allPlayers = [];
 let allGame = [];
 let currentGame;
-let grid;
-let flagCount;
 
-
-class User  {
-       name="";
+class User {
+       name = "";
        password = "";
-       games = []      
-       addGame(cG){
+       games = []
+       addGame(cG) {
               this.games.push(cG);
        }
        bio = `${this.name} played ${this.games.length}`
 }
 class Game {
-       
+
        constructor(level) {
               this.gameStatus = "pending",
-              this.level = level,
+                     this.level = level,
                      this.duration = 0,
                      this.id = 1;
        }
@@ -34,23 +31,19 @@ class Game {
        }
 }
 //initiate a global player
-var currentUser ;
+var currentUser;
 function createUser() {
-
        let nm = document.querySelector('.name').value;
        let psw = document.querySelector('.password').value;
        storage(nm, psw);
        window.location.href = "../html/index.html";
 }
 function guestGame() {
-       storage("Guest", null);
+       storage("Guest", "null");
        window.location.href = "../html/index.html";
 }
-
-
 //saving the object in IndexedDB
 function storage(nm, psw) {
-
        const request = indexedDB.open("players", 1);
 
        request.onerror = function (event) {
@@ -58,16 +51,15 @@ function storage(nm, psw) {
               console.error(event);
 
        };
-
        request.onupgradeneeded = function () {
               const db = request.result;
               // defines the scheme of the db
               const store = db.createObjectStore("users", { keyPath: "id" });
               store.createIndex("user_name", ["name"], { unique: false })
               store.createIndex("user_psw", ["password"], { unique: false })
-              store.createIndex('gameId',['gameID'],{keyPath:"gameId"});
-              store.createIndex('gameLevel',['Level'],{unique: false});
-              store.createIndex('gameStatus',['status'],{unique: false});
+              // store.createIndex('gameId',['gameID'],{keyPath:"gameId"});
+              // store.createIndex('gameLevel',['Level'],{unique: false});
+              // store.createIndex('gameStatus',['status'],{unique: false});
        }
 
        request.onsuccess = function () {
@@ -76,23 +68,24 @@ function storage(nm, psw) {
               const transaction = db.transaction("users", "readwrite");
 
               const store = transaction.objectStore("users");// db table
+              const name = store.index("user_name");
+              store.put({ id: 31, name: nm, password: psw });
 
-              store.put({ id: 1, name: nm, password: psw });
+              const query = name.get(1);
+              const searchByName = name.get([nm]);
 
-              const query = store.get(1);
-              
-              query.onsuccess = function () {
-                     console.log('query', query.result)
+              searchByName.onsuccess = function () {
+                     console.log('Addede to db : ', searchByName.result)
               };
-             
-              transaction.oncomplete = function () {
-                     db.close();
-              }
+              query.onsuccess = function () {
+                     console.log('Searched by ID : ', query.result)
+              };
        }
 }
 //getting a userName from db and assigne it to currentUser
-function getItem (){  
-       currentUser =  new User();   
+function getItem() {
+       console.log("Current Name")
+       currentUser = new User();
        const request = indexedDB.open("players", 1);
 
        request.onerror = function (event) {
@@ -105,26 +98,27 @@ function getItem (){
               const store = db.createObjectStore("users", { keyPath: "id" });
               store.createIndex("user_name", ["name"], { unique: false })
               store.createIndex("user_psw", ["password"], { unique: false })
-              store.createIndex('gameId',['gameID'],{keyPath:"gameId"});
-              store.createIndex('gameLevel',['Level'],{unique: false});
-              store.createIndex('gameStatus',['status'],{unique: false});
+              // store.createIndex('gameId',['gameID'],{keyPath:"gameId"});
+              // store.createIndex('gameLevel',['Level'],{unique: false});
+              // store.createIndex('gameStatus',['status'],{unique: false});
        }
 
        request.onsuccess = function () {
-              
+
               const db = request.result;
               const transaction = db.transaction("users", "readwrite");
 
               const store = transaction.objectStore("users");
               const nameIndex = store.index("user_name");// look up the item 
 
-              const query = store.get(1);           
+              const searchByName = nameIndex.get(["Jose"]);
+              const qr = store.get(3);
 
-              query.onsuccess = function () {
-                     console.log('query', query.result)
-                     currentUser.name = query.result.name
-                     currentUser.password = query.result.password
-                     console.log("Current user  "+currentUser.name);
+              searchByName.onsuccess = function () {
+                     console.log('Sign current user to : ', qr.result)
+                     currentUser.name = searchByName.result.name
+                     currentUser.password = searchByName.result.password
+                     console.log("Current user  " + currentUser.name);
               };
               transaction.oncomplete = function () {
                      db.close();
@@ -134,7 +128,7 @@ function getItem (){
 var newGame = false;
 //creating new game here
 function reset() {
-       newGame=true;
+       newGame = true;
        window.location.href = "../html/index.html";
 }
 
@@ -159,21 +153,21 @@ function setGameLevel(id) {
               currentGame = new Game("Expert");
               createBoard(400, 99, 3);
        }
-       
-       //check for reset, otherwise retrive data from db
-       if(!newGame){
-              getItem(); currentUser.addGame(currentGame);     
-       }else{
-              currentUser.addGame(new Game(status)); 
-       }  
-           
-}
 
+       //check for reset, otherwise retrive data from db
+
+       getItem();
+       currentUser.addGame(currentGame);
+
+
+}
+let initialFlags;
 function createBoard(numberCells, numberBombs, level) {
+
        grid = document.querySelector('.grid');
        flagCount = document.querySelector('.flagNumber');
        boardUI(level, grid);
-       const initialFlags = numberBombs;
+       initialFlags = numberBombs;
 
        let squares = [];//an array for the board
        flagCount.innerHTML = initialFlags;
@@ -193,10 +187,11 @@ function createBoard(numberCells, numberBombs, level) {
               squares.push(square)
               square.addEventListener('mouseup', (e) => {
                      changeVisibility();
-                     mouseClick(square, e, initialFlags);
-                    
+                     mouseClick(square, e, flagCount);
+
               });
        }
+       showTime();
 }
 function boardUI(level, grid) {
        if (level == 1) {
@@ -212,24 +207,30 @@ function boardUI(level, grid) {
               grid.style.gridTemplateRows = "repeat(16, 21px)";
        }
 }
-
+let gamePlay = true;
 function mouseClick(square, e, flagCount) {
        switch (e.button) {
               case 0:
                      //left
                      if (checkTheCell(square.className)) {
-                            square.style.backgroundColor = "red";
+                            square.style.backgroundColor = "#ff3300";
+                            // var img = square;
+                            // img.src = "/pictures/bomb.png";
+                            // square.img=img;
                             exposeAllMines();
                             // square.setAttribute("src","bomb.png");
                      } else {
-                            square.style.backgroundColor = "#D9D9D9";
-                            square.style.border = "1px solid blue";
+                            if (square.id % 2 == 0) {
+                                   square.style.backgroundColor = "#bfbfbf";
+                            } else {
+                                   square.style.backgroundColor = "#e6e6e6";
+                            }
                      }
                      break;
               case 2:
                      //right
                      square.innerHTML = "&#128681"
-                     flagCount.innerHTML = flagCount--;
+                     flagCount.innerHTML = initialFlags--;
 
                      break;
               default:
@@ -247,9 +248,11 @@ function checkTheCell(squareClass) {
        }
 }
 function activatePopUp() {
+       gamePlay = false;
        let popUp = document.querySelector('.popUp');
        popUp.style.visibility = "visible";
-       popUp.innerHTML = "You lost";
+       popUp.innerHTML = "You lost "
+              ;
        currentGame.gameStatus = "Lost";
        allGame.push(currentGame);
        console.log(allGame);
@@ -260,9 +263,10 @@ function JsonTheGame() {
 }
 
 function exposeAllMines() {
+       gamePlay = false;
        var sq = document.querySelectorAll('.bomb')
        sq.forEach(element => {
-              element.style.backgroundColor = "red";
+              element.style.backgroundColor = "#ff3300";
               // element.confetti();
               // confetti({
               //     particleCount: 100,
@@ -286,5 +290,41 @@ function changeVisibility() {
        let resetButton = document.querySelector('.reset')
        if (resetButton.style.visibility == 'hidden') {
               resetButton.style.visibility = 'visible';
+       }
+}
+
+
+function showTime() {
+       let [milliseconds, seconds, minutes, hours] = [0, 0, 0, 0];
+       let timerRef = document.querySelector('.clock');
+       let int = null;
+
+       int = setInterval(displayTimer, 10);
+
+       function displayTimer() {
+              if (gamePlay == true) {
+                     milliseconds += 10;
+              } else {
+                     timerRef.innerHTML = `0:00`;
+                     [milliseconds, seconds, minutes, hours] = [0, 0, 0, 0];
+              }
+              if (milliseconds == 1000) {
+                     milliseconds = 0;
+                     seconds++;
+                     if (seconds == 60) {
+                            seconds = 0;
+                            minutes++;
+                            if (minutes == 60) {
+                                   minutes = 0;
+                                   hours++;
+                            }
+                     }
+              }
+              let h = hours < 10 ? "0" + hours : hours;
+              let m = minutes < 10 ? "0" : minutes;
+              let s = seconds < 10 ? "0" + seconds : seconds;
+
+              timerRef.innerHTML = `${m}:${s}`;
+              if (gamePlay) { currentUser.duration = `${m}:${s}` };
        }
 }
