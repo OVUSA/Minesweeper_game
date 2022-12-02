@@ -1,7 +1,11 @@
 
-let allPlayers = [];
-let allGame = [];
+var allGames = [];
 let currentGame;
+var currentUser;
+var newGame = false;
+var openCells = [];
+var gameStatus = "pending";
+let gamePlay = true; // used to stop clock and recod the result
 
 class User {
        name = "";
@@ -10,10 +14,8 @@ class User {
        addGame(cG) {
               this.games.push(cG);
        }
-       bio = `${this.name} played ${this.games.length}`
 }
 class Game {
-
        constructor(level) {
               this.gameStatus = "pending",
                      this.level = level,
@@ -30,29 +32,7 @@ class Game {
               return `${this.id} game, level: ${this.level} , status ${this.status}`;
        }
 }
-
-function checkAdjacentCells(currentCell) {
-
-       let adCells = [currentCell.id - 11, currentCell.id - 12, currentCell.id - 10, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1];
-       console.log(adCells);
-       for (let i = 0; i < 3; i++) {
-              if (adCells[i] < 0) { continue; }
-
-              let adj = document.getElementById(adCells[i]);
-              if (adj.className != 'bomb') {
-                     if (adj.id % 2 == 0) {
-                            adj.style.backgroundColor = "#bfbfbf";
-                     } else {
-                            adj.style.backgroundColor = "#e6e6e6";
-                     }
-
-              } else if (currentCell.className != 'bomb') {
-                     currentCell.innerHTML = 1;
-              }
-       }
-}
-//initiate a global player
-var currentUser;
+// receive input from ui and send it to db
 function createUser() {
        let nm = document.querySelector('.name').value;
        let psw = document.querySelector('.password').value;
@@ -63,6 +43,7 @@ function guestGame() {
        storage("Guest", "null");
        window.location.href = "../html/index.html";
 }
+//------------INDEXEDDB functions--------------------------------
 //saving the object in IndexedDB
 function storage(nm, psw) {
        const request = indexedDB.open("players", 1);
@@ -78,9 +59,10 @@ function storage(nm, psw) {
               const store = db.createObjectStore("users", { keyPath: "id" });
               store.createIndex("user_name", ["name"], { unique: false })
               store.createIndex("user_psw", ["password"], { unique: false })
-              // store.createIndex('gameId',['gameID'],{keyPath:"gameId"});
-              // store.createIndex('gameLevel',['Level'],{unique: false});
-              // store.createIndex('gameStatus',['status'],{unique: false});
+              store.createIndex('gameId', ['gameID'], { keyPath: "gameId" });
+              store.createIndex('gameLevel', ['Level'], { unique: false });
+              store.createIndex('gameStatus', ['status'], { unique: false });
+              store.createIndex('game_duration', ['duration'], { unique: false });
        }
 
        request.onsuccess = function () {
@@ -90,21 +72,17 @@ function storage(nm, psw) {
 
               const store = transaction.objectStore("users");// db table
               const name = store.index("user_name");
-              store.put({ id: 31, name: nm, password: psw });
+              store.put({ id: 1, name: nm, password: psw, gameID: 1, gameStatus: "pending" });
 
-              const query = name.get(1);
               const searchByName = name.get([nm]);
 
               searchByName.onsuccess = function () {
-                     console.log('Addede to db : ', searchByName.result)
-              };
-              query.onsuccess = function () {
-                     console.log('Searched by ID : ', query.result)
+                     console.log('Added to db : ', searchByName.result)
               };
        }
 }
 //getting a userName from db and assigne it to currentUser
-function getItem() {
+function getItem(level) {
 
        currentUser = new User();
        const request = indexedDB.open("players", 1);
@@ -112,6 +90,7 @@ function getItem() {
        request.onerror = function (event) {
               console.error("An error occured with IndexDB");
               console.error(event);
+
        };
        request.onupgradeneeded = function () {
               const db = request.result;
@@ -119,34 +98,65 @@ function getItem() {
               const store = db.createObjectStore("users", { keyPath: "id" });
               store.createIndex("user_name", ["name"], { unique: false })
               store.createIndex("user_psw", ["password"], { unique: false })
-              // store.createIndex('gameId',['gameID'],{keyPath:"gameId"});
-              // store.createIndex('gameLevel',['Level'],{unique: false});
-              // store.createIndex('gameStatus',['status'],{unique: false});
+              store.createIndex('gameId', ['gameID'], { keyPath: "gameId" });
+              store.createIndex('gameLevel', ['Level'], { unique: false });
+              store.createIndex('gameStatus', ['status'], { unique: false });
+              store.createIndex('game_duration', ['duration'], { unique: false });
        }
 
        request.onsuccess = function () {
 
               const db = request.result;
+              const transaction = db.transaction("users", "readonly");            
+
+              const store = transaction.objectStore("users");// db table
+              const name = store.index("user_name");
+              const name2 = store.index("id");
+
+              const searchByName = name.get(["Marta"]);
+
+
+             searchByName.onsuccess= function(){
+              console.log("Record: "+searchByName.result)
+        // TODO     search.result.level = "Beginner";
+                     searchByName.name = searchByName.result.name;
+                     searchByName.password = searchByName.result.password;
+              console.log('Added to db : ', searchByName.result)
+              
+             };
+              transaction.oncomplete = function () {
+                     db.close();
+              }
+       }
+}
+function updateGame() {
+
+       const request = indexedDB.open("players", 1);
+
+       request.onerror = function (event) {
+              console.error("An error occured with IndexDB");
+              console.error(event);
+       };
+       request.onsuccess = function () {
+
+              const db = request.result;
               const transaction = db.transaction("users", "readwrite");
 
-              const store = transaction.objectStore("users");
-              const nameIndex = store.index("user_name");// look up the item 
-
-              const searchByName = nameIndex.get(["Jose"]);
-              const qr = store.get(3);
-
+              const store = transaction.objectStore("users");// db table
+              const nameIndex = store.index("user_name");
+              const searchByName = nameIndex.get(["Mary"]);
               searchByName.onsuccess = function () {
-                     console.log('Sign current user to : ', qr.result)
-                     currentUser.name = searchByName.result.name
-                     currentUser.password = searchByName.result.password
-                     console.log("Current user  " + currentUser.name);
+                     const user = searchByName.result;
+                     user.gameStatus = gameStatus;
+                     user.duration = currentGame.duration;
+                     console.log('Final record : ', user)
               };
               transaction.oncomplete = function () {
                      db.close();
               }
        }
 }
-var newGame = false;
+
 //creating new game here
 function reset() {
        newGame = true;
@@ -154,7 +164,7 @@ function reset() {
 }
 
 function setGameLevel(id) {
-       var status;
+       var level;
 
        let section = document.querySelector('.levels');
        section.style.display = "none";
@@ -163,21 +173,18 @@ function setGameLevel(id) {
        game.style.display = "block";
 
        if (id == "1") {
-              status = "Beginner"
-              currentGame = new Game("Beginner");
+              level = "Beginner"
               createBoard(99, 10, 1);
        } else if (id == "2") {
-              status = "Inter"
-              currentGame = new Game("Intermediate");
+              level = "Intermediate"
               createBoard(255, 40, 2);
        } else {
-              currentGame = new Game("Expert");
+              level = "Expert"
               createBoard(400, 99, 3);
        }
-
-       //check for reset, otherwise retrive data from db
-
-       getItem();
+       currentGame = new Game(level);
+       allGames.push(currentGame) // for debugging
+       getItem(level);
        currentUser.addGame(currentGame);
 
 
@@ -187,11 +194,12 @@ function createBoard(numberCells, numberBombs, level) {
 
        grid = document.querySelector('.grid');
        flagCount = document.querySelector('.flagNumber');
-       boardUI(level, grid);
+       boardUI(level, grid);// set a size of the grid
        initialFlags = numberBombs;
 
        let squares = [];//an array for the board
        flagCount.innerHTML = initialFlags;
+       initialFlags--;
 
        const emptyCells = Array(numberCells - numberBombs).fill("valid");
        const bombs = Array(numberBombs).fill('bomb')
@@ -208,9 +216,7 @@ function createBoard(numberCells, numberBombs, level) {
               squares.push(square)
               square.addEventListener('mouseup', (e) => {
                      changeVisibility();
-                     mouseClick(square, e, flagCount);
-                     checkAdjacentCells(square);
-
+                     mouseClick(square, e, flagCount, numberCells, numberBombs);
               });
        }
        showTime();
@@ -229,59 +235,46 @@ function boardUI(level, grid) {
               grid.style.gridTemplateRows = "repeat(16, 21px)";
        }
 }
-let gamePlay = true;
-function mouseClick(square, e, flagCount) {
+
+
+function mouseClick(square, e, flagCount, numberCells, numberBombs) {
        switch (e.button) {
-              case 0:
-                     //left
-                     if (checkTheCell(square.className)) {
-                            square.style.backgroundColor = "#ff3300";
-                            // var img = square;
-                            // img.src = "/pictures/bomb.png";
-                            // square.img=img;
+              case 0://left click
+                     if (square.className == 'bomb') {// if the cell has a bomb
+                            square.style.backgroundColor = "#ff3300";// red color
+                            gameStatus = "Lost"
                             exposeAllMines();
-                            // square.setAttribute("src","bomb.png");
                      } else {
-                            if (square.id % 2 == 0) {
-                                   square.style.backgroundColor = "#bfbfbf";
-                            } else {
-                                   square.style.backgroundColor = "#e6e6e6";
+                            checkAdjacentCells(square);
+                            if (openCells.length >= (numberCells - numberBombs) - 1) {
+                                   gameStatus = "Win!"
+                                   activatePopUp();
                             }
                      }
                      break;
-              case 2:
-                     //right
-                     square.innerHTML = "&#128681"
+              case 2: //right click
+                     square.innerHTML = "&#128681";
                      flagCount.innerHTML = initialFlags--;
-
                      break;
               default:
                      console.log(`Unknown button code: ${e.button}`);
        }
-
 }
 
-function checkTheCell(squareClass) {
-       if (squareClass == 'bomb') {
-              return true;
-              //selectedSquare.innerHTML=<img src = "bomb.png"></img>
-       } else {
-              return false;
-       }
-}
 function activatePopUp() {
        gamePlay = false;
        let popUp = document.querySelector('.popUp');
        popUp.style.visibility = "visible";
-       popUp.innerHTML = "You lost "
-              ;
-       currentGame.gameStatus = "Lost";
-       allGame.push(currentGame);
-       console.log(allGame);
-}
+       popUp.innerHTML = "You " + gameStatus;
 
-function JsonTheGame() {
+       currentGame.gameStatus = gameStatus;
+       updateGame();
 
+
+       // disactivate the board
+       const grid = document.querySelector('.grid');
+       grid.style.pointerEvents = 'none';
+       console.log(currentUser)
 }
 
 function exposeAllMines() {
@@ -289,24 +282,9 @@ function exposeAllMines() {
        var sq = document.querySelectorAll('.bomb')
        sq.forEach(element => {
               element.style.backgroundColor = "#ff3300";
-              // element.confetti();
-              // confetti({
-              //     particleCount: 100,
-              //     spread: 70,
-              //     origin: { y: 0.6 }
-              //   });
        });
        activatePopUp();
-       disactivateBoard();
-       console.log(currentUser);
 }
-function disactivateBoard() {
-       const grid = document.querySelector('.grid');
-       grid.style.pointerEvents = 'none';
-}
-
-
-
 // change visibility of reset button when user starts the game
 function changeVisibility() {
        let resetButton = document.querySelector('.reset')
@@ -314,8 +292,6 @@ function changeVisibility() {
               resetButton.style.visibility = 'visible';
        }
 }
-
-
 function showTime() {
        let [milliseconds, seconds, minutes, hours] = [0, 0, 0, 0];
        let timerRef = document.querySelector('.clock');
@@ -343,10 +319,41 @@ function showTime() {
                      }
               }
               let h = hours < 10 ? "0" + hours : hours;
-              let m = minutes < 10 ? "0" : minutes;
+              let m = minutes < 10 ? minutes : minutes;
               let s = seconds < 10 ? "0" + seconds : seconds;
 
               timerRef.innerHTML = `${m}:${s}`;
-              if (gamePlay) { currentUser.duration = `${m}:${s}` };
+              if (gamePlay) { currentGame.updateDuration(`${m}:${s}`) };
        }
 }
+
+function checkAdjacentCells(currentCell) {
+       let foundBombs = 0;
+
+       let adCells = [currentCell.id - 11, currentCell.id - 12, currentCell.id - 10, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 10,
+       parseInt(currentCell.id) + 11, parseInt(currentCell.id) + 12];
+       changeCellColor(currentCell);
+       console.log(adCells)
+       for (let i = 0; i < adCells.length; i++) {
+              if (adCells[i] > 0 & adCells[i] < 99) {
+                     let adj = document.getElementById(adCells[i]);
+                     console.log(adCells[i])
+                     if (adj.className != 'bomb') {
+                            changeCellColor(adj);
+                     } else {
+                            foundBombs++;
+                            currentCell.innerHTML = foundBombs;
+                     }
+              }// TODO change 99 to board size
+
+       }
+}
+function changeCellColor(adj) {
+       if (!openCells.includes(adj)) { openCells.push(adj) };
+       if (adj.id % 2 == 0) {
+              adj.style.backgroundColor = "#bfbfbf";
+       } else {
+              adj.style.backgroundColor = "#e6e6e6";
+       }
+}
+
