@@ -4,7 +4,7 @@ let currentGame;
 var currentUser;
 var newGame = false;
 var openCells = [];
-var gameStatus = "pending";
+
 let gamePlay = true; // used to stop clock and recod the result
 
 class User {
@@ -265,7 +265,9 @@ function activatePopUp() {
        gamePlay = false;
        let popUp = document.querySelector('.popUp');
        popUp.style.visibility = "visible";
-       popUp.innerHTML = "You " + gameStatus;
+       let popText  = document.querySelector('.popUpText');
+
+       popText.innerHTML = "You " + gameStatus;
 
        currentGame.gameStatus = gameStatus;
        updateGame();
@@ -330,12 +332,11 @@ function showTime() {
 function checkAdjacentCells(currentCell) {
        let foundBombs = 0;
 
-       let adCells = [currentCell.id - 11, currentCell.id - 12, currentCell.id - 10, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 10,
-       parseInt(currentCell.id) + 11, parseInt(currentCell.id) + 12];
+       let adCells = checkCellsHelper(currentCell);
        changeCellColor(currentCell);
        console.log(adCells)
-       for (let i = 0; i < adCells.length; i++) {
-              if (adCells[i] > 0 & adCells[i] < 99) {
+       for (let i = 0; i < adCells.length-1; i++) {
+              if (adCells[i] > 0 & adCells[i] < adCells[8]) {
                      let adj = document.getElementById(adCells[i]);
                      console.log(adCells[i])
                      if (adj.className != 'bomb') {
@@ -345,6 +346,21 @@ function checkAdjacentCells(currentCell) {
                             currentCell.innerHTML = foundBombs;
                      }
               }// TODO change 99 to board size
+
+       }
+}
+
+function checkCellsHelper(currentCell){
+       if(currentGame.level =="Beginner"){
+
+              let adCells=  [currentCell.id - 11, currentCell.id - 12, currentCell.id - 10, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 10,
+                     parseInt(currentCell.id) + 11, parseInt(currentCell.id) + 12, 99];
+                     return adCells;
+
+       }else if (currentGame.level == "Intermediate"){
+              let adCells=  [currentCell.id - 17, currentCell.id - 18, currentCell.id - 16, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 17,
+                     parseInt(currentCell.id) + 18, parseInt(currentCell.id) + 16,255];
+                     return adCells;
 
        }
 }
