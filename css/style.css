@@ -106,13 +106,18 @@ button.reset:active {
     align-content: space-between; 
 }
 .popUp{
-    padding: 30px;
-    background-color: yellow;
+    position: absolute;
+    padding: 10%;
+    background-color: lightgoldenrodyellow;
     color:black;
     font-weight: bolder;
-    z-index: 1;
-
-}
+    position: absolute;
+    border-radius: 20px;
+    top:28%;
+    left: 35%;
+    z-index: 9;
+    opacity: 0.8;
+ }
 .flagIcon{
     width:20px;
     height: 20px;
