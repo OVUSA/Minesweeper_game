@@ -1,16 +1,18 @@
 
-var allGames = [];
 let currentGame;
 var currentUser;
-var newGame = false;
 var openCells = [];
-
 let gamePlay = true; // used to stop clock and recod the result
 
 class User {
-       name = "";
-       password = "";
-       games = []
+       constructor(name,password){
+              this.name = name;
+              this.password = password;
+              this.games = [];
+       }
+       // name ;
+       // password;
+       // games = [];
        addGame(cG) {
               this.games.push(cG);
        }
@@ -36,136 +38,24 @@ class Game {
 function createUser() {
        let nm = document.querySelector('.name').value;
        let psw = document.querySelector('.password').value;
-       storage(nm, psw);
-       window.location.href = "../html/index.html";
+
+       addUser(nm, psw);
+       levelsPage();
+       
 }
 function guestGame() {
-       storage("Guest", "null");
-       window.location.href = "../html/index.html";
+
+       addUser("Guest", "null");
+       levelsPage();
 }
-//------------INDEXEDDB functions--------------------------------
-//saving the object in IndexedDB
-function storage(nm, psw) {
-       const request = indexedDB.open("players", 1);
-
-       request.onerror = function (event) {
-              console.error("An error occured with IndexDB");
-              console.error(event);
-
-       };
-       request.onupgradeneeded = function () {
-              const db = request.result;
-              // defines the scheme of the db
-              const store = db.createObjectStore("users", { keyPath: "id" });
-              store.createIndex("user_name", ["name"], { unique: false })
-              store.createIndex("user_psw", ["password"], { unique: false })
-              store.createIndex('gameId', ['gameID'], { keyPath: "gameId" });
-              store.createIndex('gameLevel', ['Level'], { unique: false });
-              store.createIndex('gameStatus', ['status'], { unique: false });
-              store.createIndex('game_duration', ['duration'], { unique: false });
-       }
-
-       request.onsuccess = function () {
-
-              const db = request.result;
-              const transaction = db.transaction("users", "readwrite");
-
-              const store = transaction.objectStore("users");// db table
-              const name = store.index("user_name");
-              store.put({ id: 1, name: nm, password: psw, gameID: 1, gameStatus: "pending" });
-
-              const searchByName = name.get([nm]);
-
-              searchByName.onsuccess = function () {
-                     console.log('Added to db : ', searchByName.result)
-              };
-       }
-}
-//getting a userName from db and assigne it to currentUser
-function getItem(level) {
-
-       currentUser = new User();
-       const request = indexedDB.open("players", 1);
-
-       request.onerror = function (event) {
-              console.error("An error occured with IndexDB");
-              console.error(event);
-
-       };
-       request.onupgradeneeded = function () {
-              const db = request.result;
-              // defines the scheme of the db
-              const store = db.createObjectStore("users", { keyPath: "id" });
-              store.createIndex("user_name", ["name"], { unique: false })
-              store.createIndex("user_psw", ["password"], { unique: false })
-              store.createIndex('gameId', ['gameID'], { keyPath: "gameId" });
-              store.createIndex('gameLevel', ['Level'], { unique: false });
-              store.createIndex('gameStatus', ['status'], { unique: false });
-              store.createIndex('game_duration', ['duration'], { unique: false });
-       }
-
-       request.onsuccess = function () {
-
-              const db = request.result;
-              const transaction = db.transaction("users", "readonly");            
-
-              const store = transaction.objectStore("users");// db table
-              const name = store.index("user_name");
-              const name2 = store.index("id");
-
-              const searchByName = name.get(["Marta"]);
-
-
-             searchByName.onsuccess= function(){
-              console.log("Record: "+searchByName.result)
-        // TODO     search.result.level = "Beginner";
-                     searchByName.name = searchByName.result.name;
-                     searchByName.password = searchByName.result.password;
-              console.log('Added to db : ', searchByName.result)
-              
-             };
-              transaction.oncomplete = function () {
-                     db.close();
-              }
-       }
-}
-function updateGame() {
-
-       const request = indexedDB.open("players", 1);
-
-       request.onerror = function (event) {
-              console.error("An error occured with IndexDB");
-              console.error(event);
-       };
-       request.onsuccess = function () {
-
-              const db = request.result;
-              const transaction = db.transaction("users", "readwrite");
-
-              const store = transaction.objectStore("users");// db table
-              const nameIndex = store.index("user_name");
-              const searchByName = nameIndex.get(["Mary"]);
-              searchByName.onsuccess = function () {
-                     const user = searchByName.result;
-                     user.gameStatus = gameStatus;
-                     user.duration = currentGame.duration;
-                     console.log('Final record : ', user)
-              };
-              transaction.oncomplete = function () {
-                     db.close();
-              }
-       }
-}
-
 //creating new game here
-function reset() {
-       newGame = true;
+function levelsPage() {
        window.location.href = "../html/index.html";
 }
 
 function setGameLevel(id) {
+       setUpUser();
        var level;
-
        let section = document.querySelector('.levels');
        section.style.display = "none";
 
@@ -182,12 +72,10 @@ function setGameLevel(id) {
               level = "Expert"
               createBoard(400, 99, 3);
        }
+
        currentGame = new Game(level);
-       allGames.push(currentGame) // for debugging
-       getItem(level);
        currentUser.addGame(currentGame);
-
-
+       updateGame();
 }
 let initialFlags;
 function createBoard(numberCells, numberBombs, level) {
@@ -236,7 +124,6 @@ function boardUI(level, grid) {
        }
 }
 
-
 function mouseClick(square, e, flagCount, numberCells, numberBombs) {
        switch (e.button) {
               case 0://left click
@@ -262,25 +149,24 @@ function mouseClick(square, e, flagCount, numberCells, numberBombs) {
 }
 
 function activatePopUp() {
-       gamePlay = false;
-       let popUp = document.querySelector('.popUp');
-       popUp.style.visibility = "visible";
-       let popText  = document.querySelector('.popUpText');
-
-       popText.innerHTML = "You " + gameStatus;
-
-       currentGame.gameStatus = gameStatus;
-       updateGame();
-
 
        // disactivate the board
        const grid = document.querySelector('.grid');
        grid.style.pointerEvents = 'none';
+
+       gamePlay = false;
+       let popUp = document.querySelector('.popUp');
+       popUp.style.visibility = "visible";
+
+       popUp.innerHTML = "You " + gameStatus;
+
+       currentGame.gameStatus = gameStatus;
+       updateGame();
+
        console.log(currentUser)
 }
 
 function exposeAllMines() {
-       gamePlay = false;
        var sq = document.querySelectorAll('.bomb')
        sq.forEach(element => {
               element.style.backgroundColor = "#ff3300";
@@ -335,7 +221,7 @@ function checkAdjacentCells(currentCell) {
        let adCells = checkCellsHelper(currentCell);
        changeCellColor(currentCell);
        console.log(adCells)
-       for (let i = 0; i < adCells.length-1; i++) {
+       for (let i = 0; i < adCells.length - 1; i++) {
               if (adCells[i] > 0 & adCells[i] < adCells[8]) {
                      let adj = document.getElementById(adCells[i]);
                      console.log(adCells[i])
@@ -350,17 +236,17 @@ function checkAdjacentCells(currentCell) {
        }
 }
 
-function checkCellsHelper(currentCell){
-       if(currentGame.level =="Beginner"){
+function checkCellsHelper(currentCell) {
+       if (currentGame.level == "Beginner") {
 
-              let adCells=  [currentCell.id - 11, currentCell.id - 12, currentCell.id - 10, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 10,
-                     parseInt(currentCell.id) + 11, parseInt(currentCell.id) + 12, 99];
-                     return adCells;
+              let adCells = [currentCell.id - 11, currentCell.id - 12, currentCell.id - 10, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 10,
+              parseInt(currentCell.id) + 11, parseInt(currentCell.id) + 12, 99];
+              return adCells;
 
-       }else if (currentGame.level == "Intermediate"){
-              let adCells=  [currentCell.id - 17, currentCell.id - 18, currentCell.id - 16, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 17,
-                     parseInt(currentCell.id) + 18, parseInt(currentCell.id) + 16,255];
-                     return adCells;
+       } else if (currentGame.level == "Intermediate") {
+              let adCells = [currentCell.id - 17, currentCell.id - 18, currentCell.id - 16, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 17,
+              parseInt(currentCell.id) + 18, parseInt(currentCell.id) + 16, 255];
+              return adCells;
 
        }
 }
@@ -373,3 +259,30 @@ function changeCellColor(adj) {
        }
 }
 
+// local storage 
+
+function addUser(name,password) {
+// add user on sign up page
+       currentUser = new User(name,password)
+       var user = JSON.stringify(currentUser)
+
+       localStorage.setItem("1", user)
+}
+function setUpUser() {
+       // retrive current player name
+       const st = localStorage.getItem("1");
+       let user = JSON.parse(st);
+       currentUser = new User(user.name,user.password);
+       currentUser.games = user.games
+       console.log("Current user: "+currentUser);
+}
+
+function updateGame() {
+       localStorage.removeItem("1");
+       var gameRecord = JSON.stringify(currentUser)
+       //update the user record
+       localStorage.setItem("1", gameRecord);
+}
+function finalUpdate() {
+
+}
