@@ -5,7 +5,7 @@ var openCells = [];
 let gamePlay = true; // used to stop clock and recod the result
 
 class User {
-       constructor(name,password){
+       constructor(name, password) {
               this.name = name;
               this.password = password;
               this.games = [];
@@ -22,7 +22,7 @@ class Game {
               this.gameStatus = "pending",
                      this.level = level,
                      this.duration = 0,
-                     this.id = currentUser.games.length+1;
+                     this.id = currentUser.games.length + 1;
        }
        updateStatus(status) {
               this.gameStatus = status;
@@ -41,7 +41,7 @@ function createUser() {
 
        addUser(nm, psw);
        levelsPage();
-       
+
 }
 function guestGame() {
 
@@ -96,20 +96,20 @@ function createBoard(numberCells, numberBombs, level) {
        console.log(shuffleArrays);
 
        let cell = 0;
-       for (let i = 0; i < 9; i++) {// rows
-              for ( let j = 0; j< 11;j++){ //columns
-                     const square = document.createElement('div')
-                     square.setAttribute('id', cell)
-                     square.classList.add(shuffleArrays[cell]);
-       
-                     grid.appendChild(square)
-                     squares.push(square)
-                     square.addEventListener('mouseup', (e) => {
-                            changeVisibility();
-                            mouseClick(square, e, flagCount, numberCells, numberBombs);
-                     });
-               cell++;      
-              }
+       for (let i = 0; i < numberCells; i++) {// rows
+              //  for ( let j = 0; j< 11;j++){ //columns
+              const square = document.createElement('div')
+              square.setAttribute('id', i) // TODO  change to i+""+j
+              square.classList.add(shuffleArrays[i]);// [cell]
+
+              grid.appendChild(square)
+              squares.push(square)
+              square.addEventListener('mouseup', (e) => {
+                     changeVisibility();
+                     mouseClick(square, e, flagCount, numberCells, numberBombs);
+              });
+              cell++;
+              //}
 
        }
        showTime();
@@ -236,10 +236,11 @@ function checkAdjacentCells(currentCell) {
                             foundBombs++;
                             currentCell.innerHTML = foundBombs;
                      }
-              }// TODO change 99 to board size
+              }
 
        }
 }
+
 
 function checkCellsHelper(currentCell) {
        if (currentGame.level == "Beginner") {
@@ -265,9 +266,9 @@ function changeCellColor(adj) {
 }
 
 // local storage 
-function addUser(name,password) {
-// add user on sign up page
-       currentUser = new User(name,password)
+function addUser(name, password) {
+       // add user on sign up page
+       currentUser = new User(name, password)
        var user = JSON.stringify(currentUser)
 
        localStorage.setItem("1", user)
@@ -276,9 +277,9 @@ function setUpUser() {
        // retrive current player name
        const st = localStorage.getItem("1");
        let user = JSON.parse(st);
-       currentUser = new User(user.name,user.password);
+       currentUser = new User(user.name, user.password);
        currentUser.games = user.games
-       console.log("Current user: "+currentUser);
+       console.log("Current user: " + currentUser);
 }
 
 function updateGame() {
