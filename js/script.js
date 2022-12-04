@@ -22,7 +22,7 @@ class Game {
               this.gameStatus = "pending",
                      this.level = level,
                      this.duration = 0,
-                     this.id = 1;
+                     this.id = currentUser.games.length+1;
        }
        updateStatus(status) {
               this.gameStatus = status;
@@ -95,17 +95,22 @@ function createBoard(numberCells, numberBombs, level) {
        const shuffleArrays = gameArray.sort(() => Math.random() - 0.5)
        console.log(shuffleArrays);
 
-       for (let i = 0; i < numberCells; i++) {
-              const square = document.createElement('div')
-              square.setAttribute('id', i)
-              square.classList.add(shuffleArrays[i]);
+       let cell = 0;
+       for (let i = 0; i < 9; i++) {// rows
+              for ( let j = 0; j< 11;j++){ //columns
+                     const square = document.createElement('div')
+                     square.setAttribute('id', cell)
+                     square.classList.add(shuffleArrays[cell]);
+       
+                     grid.appendChild(square)
+                     squares.push(square)
+                     square.addEventListener('mouseup', (e) => {
+                            changeVisibility();
+                            mouseClick(square, e, flagCount, numberCells, numberBombs);
+                     });
+               cell++;      
+              }
 
-              grid.appendChild(square)
-              squares.push(square)
-              square.addEventListener('mouseup', (e) => {
-                     changeVisibility();
-                     mouseClick(square, e, flagCount, numberCells, numberBombs);
-              });
        }
        showTime();
 }
@@ -260,7 +265,6 @@ function changeCellColor(adj) {
 }
 
 // local storage 
-
 function addUser(name,password) {
 // add user on sign up page
        currentUser = new User(name,password)
@@ -282,7 +286,4 @@ function updateGame() {
        var gameRecord = JSON.stringify(currentUser)
        //update the user record
        localStorage.setItem("1", gameRecord);
-}
-function finalUpdate() {
-
 }
