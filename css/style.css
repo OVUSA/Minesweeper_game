@@ -10,6 +10,11 @@
         align-content: center;
     }
 }
+.wrapper{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
 
 /*MINESWEEPER header*/
 h1{
@@ -105,19 +110,7 @@ button.reset:active {
     align-self: center;
     align-content: space-between; 
 }
-.popUp{
-    position: absolute;
-    padding: 10%;
-    background-color: lightgoldenrodyellow;
-    color:black;
-    font-weight: bolder;
-    position: absolute;
-    border-radius: 20px;
-    top:28%;
-    left: 35%;
-    z-index: 9;
-    opacity: 0.8;
- }
+
 .flagIcon{
     width:20px;
     height: 20px;

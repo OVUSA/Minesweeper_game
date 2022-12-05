@@ -26,7 +26,6 @@
   padding: 13%;
 }
 
-
 .grid div:nth-child(even) {
   border: 1px solid #ccc;
   background-color:#83DADF ;
@@ -34,5 +33,23 @@
 }
 .grid div:nth-child(even):hover {
  background-color: yellow;
+}
+.popUp{
+
+  margin-left: 2em;
+  margin-right: 3em;
+  position: absolute;
+  padding: 40px;
+  background-color: rgb(76, 222, 241);
+  color:black;
+  font-weight: bolder;
+  border-radius: 20px;
+  border:1px solid whitesmoke;
+  opacity: 0.8;
+  margin-left:30px;
+
+}
+.popUp div{
+  border-bottom: 3px solid white;
 }
 

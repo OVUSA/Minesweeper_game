@@ -1,76 +1,95 @@
-body{
+@media (min-width: 500px) {
+  [class^='box left'] {
+    display: block;
+  }
+  [class^='box left']:last-child {
+    height: 300px; /* I wish height auto worked */
+  }
+  aside {
+    display: none;
+  }
+}
+
+body {
   background-color: rgb(223, 222, 222);
 }
-#main{
+
+#main {
   width: 50%;
   margin: 5% 20%;
   margin-left: 20%;
   border: 3px outset rgb(211, 210, 210);
-  background-color:#d6d3d3;
+  background-color: #d6d3d3;
   padding: 20px 20px;
   font-size: larger;
   font-family: Arial, Helvetica, sans-serif;
-  }
-  
-  .box {
-    padding: 20px;
-  }
-  h1{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 50px;
-    text-align: center;
-    font-style: normal;
-    font-weight: normal;
-    letter-spacing: 8px;
-    margin-top: 30px;    
 }
-  
-  input[type=text], input[type=password] {
-      width: 100%;
-      padding: 12px 12px;
-      margin: 8px 0;
-      display: block;
-      box-sizing: border-box;
-      border-radius: 5px ;
-      border: 1px solid #ccc;
-  }
-  .wrapper {
-    display:grid;
-    grid-template-columns: repeat(6, 1fr); 
-    grid-template-rows: repeat(3, 1fr);
-  }
-  .right {
-    grid-column: 4 / 7;
-    padding-top: 26px;
-    grid-row: 2/4;
-  }
-  
-  .left {
-    grid-column: 1 / 4;
-    grid-row: 1/ 4;
-    border-right: 1px solid whitesmoke;
-  }
-  
-  button{
-    height: 35px;
-    width: 80%;
-    background-color: #10c8e0;
-    border: 1px solid rgb(149, 224, 243);
-    font-size: 16px;
-    font-weight: bolder;
-    letter-spacing: 1px;
-    border-radius: 8px;
-    margin-left: 10%;
-  }
-  
-  .right button{
-    height: 40px;
-    padding-bottom:3px ;
-  }
-  button:hover{
-    background-color: rgb(149, 155, 233);
-    border: 1px solid rgb(241, 217, 243);
-  }
-  button:active{
-    border: 3px outset rgb(19, 219, 203);
-  }
+
+.box {
+  padding: 20px;
+}
+
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 50px;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: 8px;
+  margin-top: 30px;
+}
+
+input[type=text],
+input[type=password] {
+  width: 100%;
+  padding: 12px 12px;
+  margin: 8px 0;
+  display: block;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.right {
+  grid-column: 4 / 7;
+  padding-top: 26px;
+  grid-row: 2/4;
+}
+
+.left {
+  grid-column: 1 / 4;
+  grid-row: 1/ 4;
+  border-right: 1px solid whitesmoke;
+}
+
+button {
+  height: 35px;
+  width: 80%;
+  background-color: #10c8e0;
+  border: 1px solid rgb(149, 224, 243);
+  font-size: 16px;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  border-radius: 8px;
+  margin-left: 10%;
+}
+
+.right button {
+  height: 40px;
+  padding-bottom: 3px;
+}
+
+button:hover {
+  background-color: rgb(149, 155, 233);
+  border: 1px solid rgb(241, 217, 243);
+}
+
+button:active {
+  border: 3px outset rgb(19, 219, 203);
+}
