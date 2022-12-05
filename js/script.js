@@ -148,6 +148,7 @@ function mouseClick(square, e, flagCount, numberCells, numberBombs) {
                      break;
               case 2: //right click
                      square.innerHTML = "&#128681";
+                     square.className = "flag";
                      flagCount.innerHTML = initialFlags--;
                      break;
               default:
@@ -232,7 +233,6 @@ function showTime() {
               if (gamePlay) { currentGame.updateDuration(`${m}:${s}`) };
        }
 }
-
 function checkAdjacentCells(currentCell) {
        let foundBombs = 0;
 
@@ -249,6 +249,7 @@ function checkAdjacentCells(currentCell) {
                      } else {
                             foundBombs++;
                             if (foundBombs > 1) { currentCell.style.color = "blue"; }
+                            if(currentCell.className!="flag")
                             currentCell.innerHTML = foundBombs;
                      }
               }
@@ -257,15 +258,15 @@ function checkAdjacentCells(currentCell) {
 }
 function countBombsAround(currentCell) {
        let foundBombs = 0;
-
        let adCells = checkCellsHelper(currentCell);
        for (let i = 0; i < adCells.length - 1; i++) {
               if (adCells[i] > 0 & adCells[i] < adCells[8]) {
                      let adj = document.getElementById(adCells[i]);
                      if (adj.className == 'bomb') {
                             foundBombs++;
+                            if(currentCell.className!="flag")
                             currentCell.innerHTML = foundBombs;
-                            if (foundBombs >= 2) { currentCell.style.color = "blue"; }
+                          
                      }
               }
        }
