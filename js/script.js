@@ -1,10 +1,12 @@
-
 let currentGame;
 var currentUser;
 var openCells = [];
 let numberGames;
 let initialFlags;
 let gamePlay = true; // used to stop clock 
+
+//server();
+
 
 class User {
        constructor(name, password) {
@@ -35,6 +37,7 @@ class Game {
 }
 // receive input from ui and send it to db
 function createUser() {
+       localStorage.clear();
        let nm = document.querySelector('.name').value;
        let psw = document.querySelector('.password').value;
        addUser(nm, psw);
@@ -42,6 +45,7 @@ function createUser() {
 
 }
 function guestGame() {
+       localStorage.clear();
        addUser("Guest", "null");
        levelsPage();
 }
@@ -175,7 +179,7 @@ function activatePopUp() {
                      record.style.padding = "5px"
                      record.style.font = "8px";
                      popUp.appendChild(record);
-                     record.innerHTML = currentUser.games[i].level + "  " + currentUser.games[i].duration + "  " + currentUser.games[i].gameStatus;                   
+                     record.innerHTML = currentUser.games[i].level + "  " + currentUser.games[i].duration + "  " + currentUser.games[i].gameStatus;
               }
        }
 }
@@ -280,10 +284,11 @@ function checkCellsHelper(currentCell) {
               parseInt(currentCell.id) + 18, parseInt(currentCell.id) + 16, 255];
               return adCells;
 
-       }else {
-              let adCells = [currentCell.id - 17, currentCell.id - 18, currentCell.id - 16, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 17,
-              parseInt(currentCell.id) + 18, parseInt(currentCell.id) + 16, 400];
-              return adCells;}
+       } else {
+              let adCells = [currentCell.id - 25, currentCell.id - 24, currentCell.id - 26, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 25,
+              parseInt(currentCell.id) + 26, parseInt(currentCell.id) + 24, 400];
+              return adCells;
+       }
 }
 function changeCellColor(adj) {
        if (!openCells.includes(adj)) { openCells.push(adj) };
@@ -308,16 +313,66 @@ function setUpUser() {
        let user = JSON.parse(st);
        currentUser = new User(user.name, user.password);
        currentUser.games = user.games
-       console.log("Current user: " + currentUser);
 }
 
 function updateGame() {
-       localStorage.removeItem("1");
        numberGames = currentUser.games.length;
        var gameRecord = JSON.stringify(currentUser)
+
        //update the user record
        localStorage.setItem("1", gameRecord);
+     //  addToMongoDB(gameRecord);
+
 }
- function jsonData(){
-       
- }
+function addToMongoDB(gameRecord) {
+
+       const express = require('express')
+       const app = express();
+
+       const mongoose = require('mongoose')
+       mongoose.connect('mongodb://localhost:27017/minesweeper', (err) => {
+              if (err) console.log('db error');
+              else console.log('db connected');
+       })
+
+       app.listen(5500, () => console.log('connecting with 5500'))
+
+
+       var NewSchema = mongoose.Schema({
+              "name": String,
+              "password": String,
+              "games": [
+                     {
+                            "id": String,
+                            "duration": String,
+                            "gameStatus": String,
+                            "level": String,
+                     }
+
+              ]
+       });
+
+       var Player = mongoose.model("Players", NewSchema);
+
+       const data = new Player(gameRecord);
+       data.save();
+
+}
+
+function server() {
+       var http = require('http');
+       var fs = require('fs');
+
+       const PORT = 8080;
+
+       fs.readFile('./html/signup.html', function (err, html) {
+
+              if (err) throw err;
+
+              http.createServer(function (request, response) {
+                     response.writeHeader(200, { "Content-Type": "text/html" });
+                     response.write(html);
+                     response.end();
+              }).listen(PORT);
+       });
+}
