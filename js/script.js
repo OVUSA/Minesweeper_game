@@ -2,7 +2,9 @@
 let currentGame;
 var currentUser;
 var openCells = [];
-let gamePlay = true; // used to stop clock and recod the result
+let numberGames;
+let initialFlags;
+let gamePlay = true; // used to stop clock 
 
 class User {
        constructor(name, password) {
@@ -10,9 +12,6 @@ class User {
               this.password = password;
               this.games = [];
        }
-       // name ;
-       // password;
-       // games = [];
        addGame(cG) {
               this.games.push(cG);
        }
@@ -38,23 +37,23 @@ class Game {
 function createUser() {
        let nm = document.querySelector('.name').value;
        let psw = document.querySelector('.password').value;
-
        addUser(nm, psw);
        levelsPage();
 
 }
 function guestGame() {
-
        addUser("Guest", "null");
        levelsPage();
 }
-//creating new game here
+// redirect to levels page
 function levelsPage() {
        window.location.href = "../html/index.html";
 }
 
 function setGameLevel(id) {
+       // retrive record from localStorage 
        setUpUser();
+
        var level;
        let section = document.querySelector('.levels');
        section.style.display = "none";
@@ -77,7 +76,6 @@ function setGameLevel(id) {
        currentUser.addGame(currentGame);
        updateGame();
 }
-let initialFlags;
 function createBoard(numberCells, numberBombs, level) {
 
        grid = document.querySelector('.grid');
@@ -95,11 +93,11 @@ function createBoard(numberCells, numberBombs, level) {
        const shuffleArrays = gameArray.sort(() => Math.random() - 0.5)
        console.log(shuffleArrays);
 
-       let cell = 0;
+
        for (let i = 0; i < numberCells; i++) {// rows
               //  for ( let j = 0; j< 11;j++){ //columns
               const square = document.createElement('div')
-              square.setAttribute('id', i) // TODO  change to i+""+j
+              square.setAttribute('id', i) // TODO  change to i+""+j if 2D implemented
               square.classList.add(shuffleArrays[i]);// [cell]
 
               grid.appendChild(square)
@@ -108,10 +106,10 @@ function createBoard(numberCells, numberBombs, level) {
                      changeVisibility();
                      mouseClick(square, e, flagCount, numberCells, numberBombs);
               });
-              cell++;
               //}
 
        }
+       //start stopWatch
        showTime();
 }
 function boardUI(level, grid) {
@@ -139,7 +137,7 @@ function mouseClick(square, e, flagCount, numberCells, numberBombs) {
                      } else {
                             checkAdjacentCells(square);
                             if (openCells.length >= (numberCells - numberBombs) - 1) {
-                                   gameStatus = "Win!"
+                                   gameStatus = "Win"
                                    activatePopUp();
                             }
                      }
@@ -159,16 +157,27 @@ function activatePopUp() {
        const grid = document.querySelector('.grid');
        grid.style.pointerEvents = 'none';
 
-       gamePlay = false;
+       gamePlay = false;// stop stopWatch
+
        let popUp = document.querySelector('.popUp');
        popUp.style.visibility = "visible";
 
-       popUp.innerHTML = "You " + gameStatus;
-
+       //updated the record
        currentGame.gameStatus = gameStatus;
-       updateGame();
+       updateGame();// update localStorage
 
-       console.log(currentUser)
+       if (currentUser.games.length == 1) { popUp.innerHTML = "You " + gameStatus + " in " + currentGame.duration }
+
+       else if (currentUser.games.length > 1) {
+
+              for (var i = 0; i < numberGames; i++) {
+                     var record = document.createElement('div')
+                     record.style.padding = "5px"
+                     record.style.font = "8px";
+                     popUp.appendChild(record);
+                     record.innerHTML = currentUser.games[i].level + "  " + currentUser.games[i].duration + "  " + currentUser.games[i].gameStatus;                   
+              }
+       }
 }
 
 function exposeAllMines() {
@@ -225,19 +234,36 @@ function checkAdjacentCells(currentCell) {
 
        let adCells = checkCellsHelper(currentCell);
        changeCellColor(currentCell);
-       console.log(adCells)
+       // console.log(adCells)
        for (let i = 0; i < adCells.length - 1; i++) {
               if (adCells[i] > 0 & adCells[i] < adCells[8]) {
                      let adj = document.getElementById(adCells[i]);
-                     console.log(adCells[i])
+                     // console.log(adCells[i])
                      if (adj.className != 'bomb') {
                             changeCellColor(adj);
+                            countBombsAround(adj);
                      } else {
                             foundBombs++;
+                            if (foundBombs > 1) { currentCell.style.color = "blue"; }
                             currentCell.innerHTML = foundBombs;
                      }
               }
 
+       }
+}
+function countBombsAround(currentCell) {
+       let foundBombs = 0;
+
+       let adCells = checkCellsHelper(currentCell);
+       for (let i = 0; i < adCells.length - 1; i++) {
+              if (adCells[i] > 0 & adCells[i] < adCells[8]) {
+                     let adj = document.getElementById(adCells[i]);
+                     if (adj.className == 'bomb') {
+                            foundBombs++;
+                            currentCell.innerHTML = foundBombs;
+                            if (foundBombs >= 2) { currentCell.style.color = "blue"; }
+                     }
+              }
        }
 }
 
@@ -254,7 +280,10 @@ function checkCellsHelper(currentCell) {
               parseInt(currentCell.id) + 18, parseInt(currentCell.id) + 16, 255];
               return adCells;
 
-       }
+       }else {
+              let adCells = [currentCell.id - 17, currentCell.id - 18, currentCell.id - 16, parseInt(currentCell.id) + 1, parseInt(currentCell.id) - 1, parseInt(currentCell.id) + 17,
+              parseInt(currentCell.id) + 18, parseInt(currentCell.id) + 16, 400];
+              return adCells;}
 }
 function changeCellColor(adj) {
        if (!openCells.includes(adj)) { openCells.push(adj) };
@@ -284,7 +313,11 @@ function setUpUser() {
 
 function updateGame() {
        localStorage.removeItem("1");
+       numberGames = currentUser.games.length;
        var gameRecord = JSON.stringify(currentUser)
        //update the user record
        localStorage.setItem("1", gameRecord);
 }
+ function jsonData(){
+       
+ }
