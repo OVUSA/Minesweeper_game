@@ -5,7 +5,15 @@ let numberGames;
 let initialFlags;
 let gamePlay = true; // used to stop clock 
 
-//server();
+// //server();
+// let submit = document.querySelector('.submit');
+// submit.addEventListener("click", () => {
+//        localStorage.clear();
+//        let nm = document.querySelector('.name').value;
+//        let psw = document.querySelector('.password').value;
+//        addUser(nm, psw);
+//        levelsPage();
+// })
 
 
 class User {
@@ -249,8 +257,8 @@ function checkAdjacentCells(currentCell) {
                      } else {
                             foundBombs++;
                             if (foundBombs > 1) { currentCell.style.color = "blue"; }
-                            if(currentCell.className!="flag")
-                            currentCell.innerHTML = foundBombs;
+                            if (currentCell.className != "flag")
+                                   currentCell.innerHTML = foundBombs;
                      }
               }
 
@@ -264,9 +272,9 @@ function countBombsAround(currentCell) {
                      let adj = document.getElementById(adCells[i]);
                      if (adj.className == 'bomb') {
                             foundBombs++;
-                            if(currentCell.className!="flag")
-                            currentCell.innerHTML = foundBombs;
-                          
+                            if (currentCell.className != "flag")
+                                   currentCell.innerHTML = foundBombs;
+
                      }
               }
        }
@@ -322,15 +330,15 @@ function updateGame() {
 
        //update the user record
        localStorage.setItem("1", gameRecord);
-     //  addToMongoDB(gameRecord);
+       // addToMongoDB(gameRecord);
 
 }
 function addToMongoDB(gameRecord) {
 
-       const express = require('express')
+       const express = import('express')
        const app = express();
 
-       const mongoose = require('mongoose')
+       const mongoose = import('mongoose')
        mongoose.connect('mongodb://localhost:27017/minesweeper', (err) => {
               if (err) console.log('db error');
               else console.log('db connected');
@@ -360,20 +368,3 @@ function addToMongoDB(gameRecord) {
 
 }
 
-function server() {
-       var http = require('http');
-       var fs = require('fs');
-
-       const PORT = 8080;
-
-       fs.readFile('./html/signup.html', function (err, html) {
-
-              if (err) throw err;
-
-              http.createServer(function (request, response) {
-                     response.writeHeader(200, { "Content-Type": "text/html" });
-                     response.write(html);
-                     response.end();
-              }).listen(PORT);
-       });
-}
