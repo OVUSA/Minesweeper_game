@@ -5,7 +5,6 @@ let numberGames;
 let initialFlags;
 let gamePlay = true; // used to stop clock 
 
-// //server();
 // let submit = document.querySelector('.submit');
 // submit.addEventListener("click", () => {
 //        localStorage.clear();
@@ -14,7 +13,7 @@ let gamePlay = true; // used to stop clock
 //        addUser(nm, psw);
 //        levelsPage();
 // })
-
+addToMongoDB();
 
 class User {
        constructor(name, password) {
@@ -115,6 +114,7 @@ function createBoard(numberCells, numberBombs, level) {
               grid.appendChild(square)
               squares.push(square)
               square.addEventListener('mouseup', (e) => {
+                     e.preventDefault();
                      changeVisibility();
                      mouseClick(square, e, flagCount, numberCells, numberBombs);
               });
@@ -173,7 +173,13 @@ function activatePopUp() {
        gamePlay = false;// stop stopWatch
 
        let popUp = document.querySelector('.popUp');
+       if(currentGame.level=='Expert'){
+              popUp.style.marginLeft = "10%";
+       }else if (currentGame.level=='Intermediate'){
+              popUp.style.marginLeft = "5%";
+       }
        popUp.style.visibility = "visible";
+
 
        //updated the record
        currentGame.gameStatus = gameStatus;
@@ -330,23 +336,20 @@ function updateGame() {
 
        //update the user record
        localStorage.setItem("1", gameRecord);
-       // addToMongoDB(gameRecord);
+        addToMongoDB(currentUser);
 
 }
-function addToMongoDB(gameRecord) {
 
-       const express = import('express')
+function addToMongoDB() {
+       const express = require('express')
        const app = express();
 
-       const mongoose = import('mongoose')
+       const mongoose = require('mongoose')
        mongoose.connect('mongodb://localhost:27017/minesweeper', (err) => {
               if (err) console.log('db error');
               else console.log('db connected');
        })
-
        app.listen(5500, () => console.log('connecting with 5500'))
-
-
        var NewSchema = mongoose.Schema({
               "name": String,
               "password": String,
@@ -357,13 +360,27 @@ function addToMongoDB(gameRecord) {
                             "gameStatus": String,
                             "level": String,
                      }
-
               ]
        });
-
        var Player = mongoose.model("Players", NewSchema);
-
-       const data = new Player(gameRecord);
+       const data = new Player({
+              name:"Maria",
+              password: "15975",
+              games: [
+                  {
+                      gameStatus: "Lost",
+                      level: "Beginner",
+                      duration: "0:31",
+                      id: 1
+                  },
+                  {
+                     gameStatus: "Win",
+                     level: "Beginner",
+                     duration: "2:31",
+                     id: 2
+                  }
+              ]
+          });
        data.save();
 
 }
